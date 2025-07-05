@@ -42,7 +42,7 @@
     <header class="header_section">
       <div class="container">
         <nav class="navbar navbar-expand-lg custom_nav-container ">
-          <a class="navbar-brand" href="index.html">
+          <a class="navbar-brand" href="index.php">
             <span>
               Feane
             </span>
@@ -54,17 +54,17 @@
 
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav  mx-auto ">
-              <li class="nav-item ">
-                <a class="nav-link" href="index.html">Home </a>
+              <li class="nav-item">
+                <a class="nav-link" href="index.php">Home </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="menu.html">Menu</a>
+                <a class="nav-link" href="menu.php">Menu</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="about.php">About</a>
               </li>
               <li class="nav-item active">
-                <a class="nav-link" href="about.html">About <span class="sr-only">(current)</span> </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="book.html">Book Table</a>
+                <a class="nav-link" href="book.php">Book Table <span class="sr-only">(current)</span> </a>
               </li>
             </ul>
             <div class="user_option">
@@ -141,40 +141,69 @@
     <!-- end header section -->
   </div>
 
-  <!-- about section -->
-
-  <section class="about_section layout_padding">
-    <div class="container  ">
-
+  <!-- book section -->
+  <section class="book_section layout_padding">
+    <div class="container">
+      <div class="heading_container">
+        <h2>
+          Book A Table
+        </h2>
+      </div>
       <div class="row">
-        <div class="col-md-6 ">
-          <div class="img-box">
-            <img src="images/about-img.png" alt="">
+        <div class="col-md-6">
+          <div class="form_container">
+            <form action="includes/booking_handler.inc.php" method="post">
+              <div>
+                <input type="text" name="nome" class="form-control" placeholder="Your Name" required />
+              </div>
+              <div>
+                <input type="text" name="telefono" class="form-control" placeholder="Phone Number" required />
+              </div>
+              <div>
+                <input type="email" name="email" class="form-control" placeholder="Your Email" required />
+              </div>
+              <div>
+                <select name="persone" class="form-control nice-select wide" required>
+                  <option value="" disabled selected>
+                    How many persons?
+                  </option>
+                  <option value="2">
+                    2
+                  </option>
+                  <option value="3">
+                    3
+                  </option>
+                  <option value="4">
+                    4
+                  </option>
+                  <option value="5">
+                    5
+                  </option>
+                </select>
+              </div>
+              <div>
+                <input type="date" name="data" class="form-control" required>
+              </div>
+              <div>
+                <input type="time" name="ora" class="form-control" required>
+              </div>
+              <div class="btn_box">
+                <button type="submit">
+                  Book Now
+                </button>
+              </div>
+            </form>
           </div>
         </div>
         <div class="col-md-6">
-          <div class="detail-box">
-            <div class="heading_container">
-              <h2>
-                We Are Feane
-              </h2>
-            </div>
-            <p>
-              There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration
-              in some form, by injected humour, or randomised words which don't look even slightly believable. If you
-              are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in
-              the middle of text. All
-            </p>
-            <a href="">
-              Read More
-            </a>
+          <div class="map_container ">
+            <div id="googleMap"></div>
           </div>
         </div>
       </div>
     </div>
   </section>
-
-  <!-- end about section -->
+  <!-- end book section -->
 
   <!-- footer section -->
   <footer class="footer_section">
