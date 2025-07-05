@@ -1,4 +1,12 @@
-<?php session_start(); ?>
+<?php 
+session_start(); 
+
+if (!isset($_SESSION['utente_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -50,12 +58,9 @@
       <div class="row">
         <div class="col-md-6">
           <div class="form_container">
-            <form action="includes/booking_handler.inc.php" method="post">
+            <form action="includes/form_prenotazioni_handler.inc.php" method="post">
               <div>
                 <input type="text" name="nome" class="form-control" placeholder="Your Name" required />
-              </div>
-              <div>
-                <input type="text" name="telefono" class="form-control" placeholder="Phone Number" required />
               </div>
               <div>
                 <input type="email" name="email" class="form-control" placeholder="Your Email" required />

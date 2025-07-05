@@ -2,7 +2,7 @@
 session_start();
 
 if (isset($_SESSION['utente_id'])) {
-    header("Location: index.php"); // o un'altra pagina dopo il login
+    header("Location: utente.php"); // o un'altra pagina dopo il login
     exit;
 }
 

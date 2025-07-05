@@ -35,6 +35,8 @@
 
   <link rel="stylesheet" href="css/register_login.css">
 
+  <link rel="stylesheet" href="css/utente.css">
+
 </head>
 <body>
 

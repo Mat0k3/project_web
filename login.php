@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['utente_id'] = $utente['ID_Utente'];
                 $_SESSION['utente_nome'] = $utente['Nome'];
 
-                header("Location: index.php"); // Reindirizza alla home o dashboard
+                header("Location: utente.php"); // Reindirizza alla home o dashboard
                 exit;
             } else {
                 $errore = "Password errata.";
