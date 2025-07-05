@@ -142,6 +142,12 @@ a:focus {
   padding: 15px 0;
 }
 
+.header_section {
+  background-color: #191a1b; /* Colore scuro, puoi cambiarlo */
+  color: white;
+}
+
+
 .header_section .container-fluid {
   padding-right: 25px;
   padding-left: 25px;
