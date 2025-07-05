@@ -143,9 +143,10 @@ a:focus {
 }
 
 .header_section {
-  background-color: #191a1b; /* Colore scuro, puoi cambiarlo */
+  background: linear-gradient(to right, #2a2e37 0%, #262e31 100%);
   color: white;
 }
+
 
 
 .header_section .container-fluid {
