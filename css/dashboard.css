@@ -59,6 +59,11 @@ h2 {
   transform: scale(1.02);
 }
 
+.btn-style {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+
 .margine_basso{
   margin-bottom: 35px;
 }
@@ -66,4 +71,46 @@ h2 {
 .extra-bottom-space {
   padding-bottom: 150px; 
   padding-top: 75px; 
+}
+
+.card {
+  border-radius: 12px;
+}
+
+.card form button {
+  min-width: 140px;
+  transition: 0.2s;
+}
+
+.card form button:hover {
+  transform: scale(1.05);
+}
+
+.btn-outline-dark {
+  border-color: #343a40;
+  color: #343a40;
+}
+
+.btn-outline-dark:hover {
+  background-color: #343a40;
+  color: #fff;
+}
+
+.btn-outline-success {
+  border-color: #28a745;
+  color: #28a745;
+}
+
+.btn-outline-success:hover {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.btn-outline-danger {
+  border-color: #dc3545;
+  color: #dc3545;
+}
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: #fff;
 }

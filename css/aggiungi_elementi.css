@@ -1,0 +1,44 @@
+/* aggiunta.css */
+
+.btn-action {
+  display: block;
+  width: 100%;
+  padding: 18px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background-color: #ffbe33;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.btn-action:hover {
+  background-color: #e6a700;
+  transform: translateY(-2px);
+}
+
+.swal2-input,
+.swal2-textarea,
+.swal2-select {
+  width: 100% !important;
+  margin: 6px 0;
+  font-size: 1rem;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.container h2 {
+  color: #222;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+  .btn-action {
+    font-size: 1rem;
+    padding: 14px;
+  }
+}

@@ -51,19 +51,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Inserisci nel database
     try {
         $stmt = $pdo->prepare("
-            INSERT INTO prenotazione (ID_Utente, Data, Ora, Persone, Stato)
-            VALUES (:id, :data, :ora, :persone, 'In sospeso')
+            INSERT INTO prenotazione (ID_Utente, Nome_Prenotazione, Data, Ora, Persone, Stato)
+            VALUES (:id, :nome, :data, :ora, :persone, 'In sospeso')
         ");
         $stmt->execute([
             ':id' => $idUtente,
+            ':nome' => $nome,
             ':data' => $data,
             ':ora' => $ora,
             ':persone' => $persone
         ]);
 
         // Eventualmente: salva nome/email in sessione temporanea
-        $_SESSION['ultimo_nome_prenotazione'] = $nome;
-        $_SESSION['ultima_email_prenotazione'] = $email;
+        //$_SESSION['ultimo_nome_prenotazione'] = $nome;
+        //$_SESSION['ultima_email_prenotazione'] = $email;
 
         header("Location: ../utente.php?prenotazione=ok");
         exit;

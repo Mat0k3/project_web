@@ -81,6 +81,7 @@ $lista_ordini = $ordini->fetchAll();
     } else {
         foreach ($lista_prenotazioni as $p) {
             echo '<div class="list-group-item">';
+            echo "<strong>Nome:</strong> " . htmlspecialchars($p['Nome_Prenotazione']) . " | ";
             echo "<strong>Data:</strong> " . htmlspecialchars($p['Data']) . " | ";
             echo "<strong>Ora:</strong> " . htmlspecialchars($p['Ora']) . " | ";
             echo "<strong>Persone:</strong> " . htmlspecialchars($p['Persone']) . " | ";

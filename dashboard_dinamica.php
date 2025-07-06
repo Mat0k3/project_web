@@ -28,12 +28,12 @@ $servizi = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
 // Mappa: nome servizio → link
 $link_servizi = [
-    "gestione ordini" => "gestione_ordini.php",
-    "gestione prenotazioni" => "gestione_prenotazioni.php",
-    "aggiunta prodotti" => "aggiungi_prodotto.php",
-    "modifica prodotti" => "modifica_prodotto.php",
-    "aggiunta offerte" => "aggiungi_offerta.php",
-    "modifica offerte" => "modifica_offerta.php"
+  "gestione ordini" => "gestione_ordini.php",
+  "gestione prenotazioni" => "gestione_prenotazioni.php",
+  "aggiunta prodotti" => "aggiungi_elementi.php",
+  "modifica prodotti" => "modifica_prodotto.php",
+  "aggiunta offerte" => "aggiungi_offerta.php",
+  "modifica offerte" => "modifica_offerta.php"
 ];
 
 // Calcola saldo se ha accesso
