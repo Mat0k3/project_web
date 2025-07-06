@@ -2,8 +2,27 @@
 session_start();
 
 if (isset($_SESSION['utente_id'])) {
-    header("Location: utente.php"); // o un'altra pagina dopo il login
-    exit;
+  require_once 'includes/dbh_test.inc.php';
+
+  // Recupera il gruppo dell’utente
+  $stmt = $pdo->prepare("
+      SELECT g.Nome 
+      FROM gruppo g
+      JOIN utente_gruppo ug ON ug.ID_Gruppo = g.ID_Gruppo
+      WHERE ug.ID_Utente = :id
+      LIMIT 1
+  ");
+  $stmt->execute([':id' => $_SESSION['utente_id']]);
+  $gruppo = strtolower($stmt->fetchColumn());
+
+  // Reindirizzamento in base al gruppo
+  if ($gruppo === 'utenti') {
+      header("Location: utente.php");
+      exit;
+  } elseif ($gruppo === 'admin' || $gruppo === 'cucina') {
+      header("Location: dashboard_dinamica.php");
+      exit;
+  }
 }
 
 require_once 'includes/dbh.inc.php'; // Connessione PDO

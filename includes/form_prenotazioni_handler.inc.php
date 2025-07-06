@@ -1,10 +1,30 @@
 <?php
 session_start();
-require_once 'dbh_test.inc.php';
+require_once 'dbh.inc.php';
 
 if (!isset($_SESSION['utente_id'])) {
     header("Location: ../login.php");
     exit;
+}
+
+if (isset($_SESSION['utente_id'])) {
+
+    // Recupera il gruppo dell’utente
+    $stmt = $pdo->prepare("
+        SELECT g.Nome 
+        FROM gruppo g
+        JOIN utente_gruppo ug ON ug.ID_Gruppo = g.ID_Gruppo
+        WHERE ug.ID_Utente = :id
+        LIMIT 1
+    ");
+    $stmt->execute([':id' => $_SESSION['utente_id']]);
+    $gruppo = strtolower($stmt->fetchColumn());
+
+    // Reindirizzamento in base al gruppo
+    if ($gruppo === 'admin' || $gruppo === 'cucina') {
+        header("Location: ../errore_permessi.php");
+        exit;
+    }
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {

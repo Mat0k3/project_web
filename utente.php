@@ -43,15 +43,6 @@ $lista_ordini = $ordini->fetchAll();
             echo "<strong>Data:</strong> {$ordine['Data']} | ";
             echo "<strong>Stato:</strong> {$ordine['Stato']} | ";
             echo "<strong>Costo:</strong> €" . number_format($ordine['Costo'], 2, ',', '.');
-            echo '
-                <form action="includes/annulla_handler.php" method="post" class="d-inline float-end ms-2">
-                    <input type="hidden" name="tipo" value="ordine">
-                    <input type="hidden" name="id" value="' . $ordine['ID_Ordinazione'] . '">
-                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Annulla ordine" onclick="return confirm(\'Confermi la cancellazione dell\\\'ordine?\')">
-                    🗑️
-                    </button>
-                </form>
-            ';
             echo '</div>';
         }
     }

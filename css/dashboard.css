@@ -1,0 +1,69 @@
+h2 {
+  font-family: 'Dancing Script', cursive;
+  font-weight: bold;
+  color: #191919;
+}
+
+.stat-card {
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  transition: 0.3s ease-in-out;
+}
+
+.stat-card:hover {
+  background-color: #ffecb5;
+}
+
+.stat-card h5 {
+  font-size: 1.3rem;
+  color: #333;
+}
+
+.stat-card p {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ffbe33;
+}
+
+.dashboard-btn {
+  margin: 10px;
+  background-color: #ffbe33;
+  color: white;
+  font-weight: 500;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+.dashboard-btn-block {
+  display: block;
+  background-color: #ffbe33;
+  color: white;
+  text-align: center;
+  padding: 18px;
+  border-radius: 15px;
+  font-weight: 500;
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-btn-block:hover {
+  background-color: #e6a600;
+  color: #fff;
+  transform: scale(1.02);
+}
+
+.margine_basso{
+  margin-bottom: 35px;
+}
+
+.extra-bottom-space {
+  padding-bottom: 150px; 
+  padding-top: 75px; 
+}

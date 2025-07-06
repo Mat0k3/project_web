@@ -1,9 +1,29 @@
 <?php
 session_start();
 
+
 if (isset($_SESSION['utente_id'])) {
-    header("Location: index.php"); 
-    exit;
+  require_once 'includes/dbh_test.inc.php';
+
+  // Recupera il gruppo dell’utente
+  $stmt = $pdo->prepare("
+      SELECT g.Nome 
+      FROM gruppo g
+      JOIN utente_gruppo ug ON ug.ID_Gruppo = g.ID_Gruppo
+      WHERE ug.ID_Utente = :id
+      LIMIT 1
+  ");
+  $stmt->execute([':id' => $_SESSION['utente_id']]);
+  $gruppo = strtolower($stmt->fetchColumn());
+
+  // Reindirizzamento in base al gruppo
+  if ($gruppo === 'utenti') {
+      header("Location: utente.php");
+      exit;
+  } elseif ($gruppo === 'admin' || $gruppo === 'cucina') {
+      header("Location: dashboard_dinamica.php");
+      exit;
+  }
 }
 
 $prefill_email = '';
@@ -36,8 +56,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['utente_id'] = $utente['ID_Utente'];
                 $_SESSION['utente_nome'] = $utente['Nome'];
 
-                header("Location: utente.php"); // Reindirizza alla home o dashboard
-                exit;
+                
+                if (isset($_SESSION['prov'])){
+                  if ($_SESSION['prov'] == 'book'){
+                    $_SESSION['prov'] = '';
+                    header("Location: book.php");
+                    exit;
+                  }
+                }
+
+                $stmt = $pdo->prepare("
+                  SELECT g.Nome 
+                  FROM gruppo g
+                  JOIN utente_gruppo ug ON ug.ID_Gruppo = g.ID_Gruppo
+                  WHERE ug.ID_Utente = :id
+                  LIMIT 1
+                ");
+                $stmt->execute([':id' => $_SESSION['utente_id']]);
+                $gruppo = strtolower($stmt->fetchColumn());
+
+                // Reindirizzamento in base al gruppo
+                if ($gruppo === 'utenti') {
+                    header("Location: utente.php");
+                    exit;
+                } elseif ($gruppo === 'admin' || $gruppo === 'cucina') {
+                    header("Location: dashboard_dinamica.php");
+                    exit;
+                }
             } else {
                 $errore = "Password errata.";
             }
