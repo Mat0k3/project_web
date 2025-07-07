@@ -1,0 +1,447 @@
+/* Sfondo generale bianco */
+body {
+    background: white;
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+
+/* Container principale - design minimal */
+.admin-container {
+    background: white;
+    padding: 40px;
+    margin: 20px auto;
+    max-width: 1200px;
+}
+
+/* Header minimal */
+.admin-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+}
+
+.admin-header h2 {
+    color: #333;
+    font-weight: 600;
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+/* Griglia bottoni - 2x2 su desktop, 1x4 su mobile */
+.buttons-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 25px;
+    margin-top: 30px;
+}
+
+/* Bottoni principali - gialli come nelle immagini */
+.admin-btn {
+    background: #f39c12;
+    color: #333;
+    border: none;
+    padding: 25px 30px;
+    border-radius: 15px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+    text-transform: none;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.admin-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4);
+    background: #e67e22;
+}
+
+.admin-btn:hover::before {
+    left: 100%;
+}
+
+.admin-btn i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+/* Overlay per popup */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { 
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to { 
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* Popup styling */
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    max-width: 600px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    animation: slideIn 0.3s ease;
+}
+
+/* Header del popup */
+.popup-header {
+    text-align: center;
+    padding: 30px 30px 20px;
+    position: relative;
+    background: white;
+    border-radius: 20px 20px 0 0;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.popup-header h2 {
+    color: #333;
+    font-weight: 600;
+    font-size: 1.8rem;
+    margin: 0;
+    text-transform: none;
+    letter-spacing: 1px;
+}
+
+/* Bottone chiusura */
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #999;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-btn:hover {
+    background: #f0f0f0;
+    color: #333;
+    transform: rotate(90deg);
+}
+
+/* Form del popup */
+.popup-form {
+    padding: 30px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 1rem;
+}
+
+/* Campi del form - CORRETTO */
+.form-control {
+    width: 100%;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 12px 15px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    line-height: 1.4;
+    min-height: 48px;
+}
+
+/* Specifico per i select - CORRETTO */
+select.form-control {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 12px center;
+    background-repeat: no-repeat;
+    background-size: 16px 12px;
+    padding-right: 40px;
+    cursor: pointer;
+    display: block;
+    height: 48px;
+}
+
+/* Specifico per input text e number - CORRETTO */
+input.form-control {
+    height: 48px;
+    display: block;
+}
+
+/* Specifico per textarea - CORRETTO */
+textarea.form-control {
+    display: block;
+    resize: vertical;
+    min-height: 90px;
+    padding-top: 12px;
+    line-height: 1.5;
+    align-items: flex-start;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #f39c12;
+    box-shadow: 0 0 0 0.2rem rgba(243, 156, 18, 0.25);
+    background: white;
+}
+
+/* Sezioni per select multipli */
+.select-section {
+    margin-bottom: 30px;
+}
+
+.select-section h5 {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.select-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.select-item select {
+    flex: 1;
+    margin: 0;
+}
+
+/* Bottoni add/remove */
+.btn-add, .btn-remove {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.btn-add {
+    background: #f39c12;
+    color: white;
+}
+
+.btn-add:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+    background: #e67e22;
+}
+
+.btn-remove {
+    background: #333;
+    color: white;
+}
+
+.btn-remove:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(51, 51, 51, 0.4);
+    background: #555;
+}
+
+/* Menu popup specifico */
+.menu-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.menu-row .form-group {
+    margin-bottom: 20px;
+}
+
+.menu-row .form-control {
+    width: 100%;
+}
+
+/* Bottoni del form - CORRETTO */
+.form-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 2px solid #f8f9fa;
+    width: 100%;
+}
+
+/* Bottone principale - giallo */
+.btn-primary-custom {
+    background: #f39c12;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-primary-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(243, 156, 18, 0.3);
+    background: #e67e22;
+}
+
+/* Bottone secondario - nero */
+.btn-secondary-custom {
+    background: #333;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-secondary-custom:hover {
+    background: #555;
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .admin-container {
+        margin: 10px;
+        padding: 25px;
+    }
+
+    .admin-header h2 {
+        font-size: 2rem;
+    }
+
+    .buttons-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, 1fr);
+    }
+
+    .popup {
+        width: 95%;
+        max-height: 90vh;
+    }
+
+    .popup-form {
+        padding: 20px;
+    }
+
+    .menu-row {
+        grid-template-columns: 1fr;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn-primary-custom,
+    .btn-secondary-custom {
+        width: 100%;
+        max-width: 200px;
+    }
+
+    .select-item {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .select-item select {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-container {
+        padding: 20px;
+    }
+
+    .admin-header h2 {
+        font-size: 1.8rem;
+    }
+
+    .admin-btn {
+        padding: 20px 25px;
+        font-size: 1rem;
+    }
+
+    .popup-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .popup-form {
+        padding: 15px;
+    }
+}
