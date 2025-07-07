@@ -51,18 +51,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bindParam(':password', $password);
 
             if ($stmt->execute()) {
-                $successo = "Registrazione avvenuta con successo!";
-                $_SESSION['temp_user'] = [
-                    'email' => $_POST['email'],
-                    'password' => $_POST['password']
-                ];
-
-                header("Location: login.php?success=1");
-                exit;
-
-            } else {
-                $errore = "Errore durante la registrazione.";
-            }
+              // Recupera l'ID dell'utente appena registrato
+              $id_utente = $pdo->lastInsertId();
+          
+              // Recupera l'ID del gruppo 'utente'
+              $stmt_gruppo = $pdo->prepare("SELECT ID_Gruppo FROM gruppo WHERE LOWER(Nome) = 'utenti'");
+              $stmt_gruppo->execute();
+              $id_gruppo = $stmt_gruppo->fetchColumn();
+          
+              if ($id_gruppo) {
+                  // Inserisci nella tabella utente_gruppo
+                  $stmt_associa = $pdo->prepare("INSERT INTO utente_gruppo (ID_Utente, ID_Gruppo) VALUES (:id_utente, :id_gruppo)");
+                  $stmt_associa->execute([
+                      ':id_utente' => $id_utente,
+                      ':id_gruppo' => $id_gruppo
+                  ]);
+              }
+          
+              $successo = "Registrazione avvenuta con successo!";
+              $_SESSION['temp_user'] = [
+                  'email' => $_POST['email'],
+                  'password' => $_POST['password']
+              ];
+              $_SESSION['utente_id'] = $id_utente;
+              header("Location: utente.php?");
+              exit;
+          }
         }
     } catch (PDOException $e) {
         $errore = "Errore del server: " . $e->getMessage();

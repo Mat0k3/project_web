@@ -46,8 +46,38 @@ if (!isset($_SESSION['utente_id'])) {
             ->execute([$cartId, $id]);
       }
     } elseif ($action === 'checkout') {
-      // gestisci conferma ordine (non implementato in questa versione)
-      echo json_encode(['success' => true]);
+      try {
+          $pdo->beginTransaction();
+  
+          // Calcolo costo totale
+          $tot = 0;
+          $stmt = $pdo->prepare("SELECT p.Prezzo, pc.Quantità FROM prodotti_carrello pc JOIN prodotto p USING(ID_Prodotto) WHERE pc.ID_Carrello = ?");
+          $stmt->execute([$cartId]);
+          foreach ($stmt->fetchAll() as $r) $tot += $r['Prezzo'] * $r['Quantità'];
+  
+          $stmt = $pdo->prepare("SELECT m.Prezzo, mc.Quantità FROM menu_carrello mc JOIN menu m USING(ID_Menu) WHERE mc.ID_Carrello = ?");
+          $stmt->execute([$cartId]);
+          foreach ($stmt->fetchAll() as $r) $tot += $r['Prezzo'] * $r['Quantità'];
+  
+          // Inserisci nella tabella ordinazione
+          $stmt = $pdo->prepare("INSERT INTO ordinazione (ID_Utente, Data, Stato, Costo) VALUES (?, NOW(), 'In preparazione', ?)");
+          $stmt->execute([$userId, $tot]);
+          $id_ordinazione = $pdo->lastInsertId();
+  
+          // Se hai tabelle `ordinazione_prodotto` e `ordinazione_menu`, inseriscile qui (solo se esistono)
+          // altrimenti puoi saltare queste righe.
+  
+          // Svuota carrello
+          $pdo->prepare("DELETE FROM prodotti_carrello WHERE ID_Carrello = ?")->execute([$cartId]);
+          $pdo->prepare("DELETE FROM menu_carrello WHERE ID_Carrello = ?")->execute([$cartId]);
+  
+          $pdo->commit();
+  
+          echo json_encode(['success' => true]);
+      } catch (Exception $e) {
+          $pdo->rollBack();
+          echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+      }
       exit;
     }
   
@@ -452,6 +482,21 @@ if (!isset($_SESSION['utente_id'])) {
           document.getElementById('totale').textContent = data.totale;
         }
       });
+    });
+  });
+
+    document.getElementById('checkout-btn')?.addEventListener('click', () => {
+    fetch('', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ action: 'checkout' })
+    }).then(r => r.json()).then(data => {
+      if (data.success) {
+        alert('Ordine confermato!');
+        location.reload();
+      } else {
+        alert('Errore durante la conferma ordine: ' + (data.error || 'Errore sconosciuto'));
+      }
     });
   });
   </script>
