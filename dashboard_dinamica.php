@@ -31,7 +31,7 @@ $link_servizi = [
   "gestione ordini" => "gestione_ordini.php",
   "gestione prenotazioni" => "gestione_prenotazioni.php",
   "aggiunta prodotti" => "aggiungi_elementi_2.php",
-  "modifica prodotti" => "modifica_prodotto.php",
+  "elimina prodotti" => "elimina_prodotti.php",
   "aggiunta offerte" => "aggiungi_offerta.php",
   "modifica offerte" => "modifica_offerta.php"
 ];
