@@ -351,11 +351,12 @@ if (!isset($_SESSION['utente_id'])) {
     .total-amount {
       font-size: 1.5em;
     }
+
   }
   </style>
   
   <section class="py-5">
-    <div class="container">
+    <div class="container spazio">
       <div class="row justify-content-center">
         <div class="col-12 col-lg-10">
           <h2 class="mb-4 text-center">

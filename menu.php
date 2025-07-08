@@ -223,14 +223,13 @@ function mostraMenu(PDO $pdo): void {
 ?>
 
 
-
 <link rel="stylesheet" href="css/menu.css">
 
 
 
-<section class="food_section layout_padding">
+<section class="food_section layout_padding ">
 
-  <div class="container">
+  <div class="container food">
 
     <div class="heading_container heading_center">
 

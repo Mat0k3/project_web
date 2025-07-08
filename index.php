@@ -63,6 +63,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
     .food{
       margin-top: 50px;
     }
+    .header_personalizzato{
+      background: transparent;
+    }
+
   </style>
 
   <div class="hero_area">
@@ -70,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
       <img src="images/hero-bg-gpt.png" alt="">
     </div>
     <!-- header section strats -->
-    <header class="header_section">
+    <header class="header_section header_personalizzato">
       <div class="container">
         <nav class="navbar navbar-expand-lg custom_nav-container ">
           <a class="navbar-brand" href="index.php">
@@ -632,5 +636,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
 
 
   <!-- end client section -->
+<script>
+  window.addEventListener('scroll', function () {
+    const header = document.querySelector('header');
+    if (window.scrollY > 100) {
+      header.classList.remove('header_personalizzato');
+    } else {
+      header.classList.add('header_personalizzato');
+    }
+  });
+</script>
+
 
 <?php include 'footer.php'; ?>

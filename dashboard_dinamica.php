@@ -55,15 +55,15 @@ if ($mostra_saldo) {
 <?php include 'header.php'; ?>
 <link rel="stylesheet" href="css/dashboard.css">
 
-<div class="container mt-5">
-  <h2 class="text-center mb-4">Dashboard <?php echo htmlspecialchars($nome_utente); ?></h2>
+<div class="container mt-5 ">
+  <h2 class="text-center mb-4 spazio">Dashboard <?php echo htmlspecialchars($nome_utente); ?></h2>
 
   <div class="text-end mb-3">
     <a href="logout.php" class="btn btn-danger">Logout</a>
   </div>
 
   <?php if ($mostra_saldo): ?>
-  <div class="row mb-5">
+  <div class="row mb-5 ">
     <div class="col-12 col-md-6 mb-4 mb-md-0">
       <div class="card stat-card">
         <h5 class="card-title">Guadagno giornaliero</h5>

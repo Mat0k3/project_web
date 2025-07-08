@@ -43,14 +43,18 @@ if (!isset($_SESSION['utente_id'])) {
 </head>
 
 <body class="sub_page">
-
+  <style>
+    .spazio{
+      margin-top: 50px;
+    }
+  </style>
   <div class="hero_area">
     <?php include 'header.php'; ?>
   </div>
 
   <!-- book section -->
   <section class="book_section layout_padding">
-    <div class="container">
+    <div class="container spazio">
       <div class="heading_container">
         <h2>
           Book A Table

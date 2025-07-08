@@ -142,9 +142,19 @@ a:focus {
   padding: 15px 0;
 }
 
+.spazio{
+  margin-top: 70px;
+}
+
 .header_section {
-  background: linear-gradient(to right, #2a2e37 0%, #262e31 100%);
+  background: #262e31;
   color: white;
+  position: fixed;
+  left: 0;
+  top:0;
+  right:0;
+  z-index: 5;
+  transition: background 0.3s ease;
 }
 
 

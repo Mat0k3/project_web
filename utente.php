@@ -25,7 +25,7 @@ $lista_ordini = $ordini->fetchAll();
 
 
 <div class="container mt-5">
-  <h2 class="text-center mb-4">Benvenuto, <?php echo htmlspecialchars($nome); ?></h2>
+  <h2 class="text-center mb-4 spazio">Benvenuto, <?php echo htmlspecialchars($nome); ?></h2>
 
   <div class="text-end mb-3">
     <a href="logout.php" class="btn btn-danger">Logout</a>
