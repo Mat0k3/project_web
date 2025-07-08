@@ -393,11 +393,11 @@ if (!isset($_SESSION['utente_id'])) {
                     </td>
                     <td class="price-cell prezzo">€ <?= number_format($item['Prezzo'] * $item['Quantità'], 2) ?></td>
                     <td class="text-center">
-                        <div class='centered'>
+                      <div class='centered'>
                         <button class="btn btn-danger rimuovi" title="Rimuovi dal carrello">
                         X
-                      </button>
-                        </div>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                   <?php endforeach; ?>
@@ -413,9 +413,11 @@ if (!isset($_SESSION['utente_id'])) {
                     </td>
                     <td class="price-cell prezzo">€ <?= number_format($m['Prezzo'] * $m['Quantità'], 2) ?></td>
                     <td class="text-center">
-                      <button class="btn btn-danger remove-btn rimuovi" title="Rimuovi dal carrello">
-                        <i class="fas fa-trash"></i>
-                      </button>
+                      <div class='centered'>
+                        <button class="btn btn-danger rimuovi" title="Rimuovi dal carrello">
+                        X
+                        </button>
+                      </div>
                     </td>
                   </tr>
                   <?php endforeach; ?>

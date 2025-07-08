@@ -40,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             case 'aggiungi_menu':
                 $nome = trim($_POST['nome']);
                 $descrizione = trim($_POST['descrizione']);
+                $prezzo = floatval($_POST['prezzo']); // AGGIUNTO
                 $prodotto_panino = !empty($_POST['prodotto_panino']) ? $_POST['prodotto_panino'] : null;
                 $prodotto_bevanda = !empty($_POST['prodotto_bevanda']) ? $_POST['prodotto_bevanda'] : null;
                 $prodotto_fritti = !empty($_POST['prodotto_fritti']) ? $_POST['prodotto_fritti'] : null;
@@ -51,9 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                     throw new Exception('Menu già esistente');
                 }
                 
-                // Inserisci il menu
-                $stmt = $pdo->prepare("INSERT INTO menu (Nome, Descrizione) VALUES (?, ?)");
-                $stmt->execute([$nome, $descrizione]);
+                // Inserisci il menu - MODIFICATA per includere il prezzo
+                $stmt = $pdo->prepare("INSERT INTO menu (Nome, Descrizione, Prezzo) VALUES (?, ?, ?)");
+                $stmt->execute([$nome, $descrizione, $prezzo]);
                 $menu_id = $pdo->lastInsertId();
                 
                 // Collega i prodotti al menu
@@ -440,6 +441,10 @@ $prodotti_fritti = $pdo->query("SELECT ID_Prodotto, Nome FROM prodotto WHERE ID_
             <input type="text" id="nome-menu" name="nome" class="form-control" required>
         </div>
         <div class="form-group">
+            <label for="prezzo-menu">Prezzo (€)</label>
+            <input type="number" id="prezzo-menu" step="0.01" name="prezzo" class="form-control" required>
+        </div>
+        <div class="form-group">
             <label for="descrizione-menu">Descrizione</label>
             <textarea id="descrizione-menu" name="descrizione" class="form-control" rows="3"></textarea>
         </div>
@@ -664,7 +669,7 @@ function showConfirmPopup(type, formData) {
             message = `Sei sicuro di voler aggiungere l'ingrediente "${formData.get('nome')}"?`;
             break;
         case 'menu':
-            message = `Sei sicuro di voler aggiungere il menu "${formData.get('nome')}"?`;
+            message = `Sei sicuro di voler aggiungere il menu "${formData.get('nome')}" al prezzo di €${formData.get('prezzo')}?`;
             break;
         case 'prodotto':
             message = `Sei sicuro di voler aggiungere il prodotto "${formData.get('nome')}" al prezzo di €${formData.get('prezzo')}?`;
@@ -753,6 +758,12 @@ document.getElementById('form-menu').addEventListener('submit', function(e) {
     // Validazione
     if (!formData.get('nome').trim()) {
         showFeedback('error', 'Errore Validazione', 'Il nome del menu è obbligatorio');
+        return;
+    }
+    
+    // Validazione del prezzo
+    if (!formData.get('prezzo') || parseFloat(formData.get('prezzo')) <= 0) {
+        showFeedback('error', 'Errore Validazione', 'Il prezzo deve essere maggiore di 0');
         return;
     }
     
