@@ -129,7 +129,6 @@
                   </g>
                 </svg>
               </a>
-              </form>
               <a href="" class="order_online">
                 Order Online
               </a>

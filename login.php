@@ -57,13 +57,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['utente_nome'] = $utente['Nome'];
 
                 
-                if (isset($_SESSION['prov'])){
-                  if ($_SESSION['prov'] == 'book'){
-                    $_SESSION['prov'] = '';
-                    header("Location: book.php");
-                    exit;
-                  }
-                }
+                  // if (isset($_SESSION['prov'])){
+                  //   if ($_SESSION['prov'] == 'book'){
+                  //     $_SESSION['prov'] = '';
+                  //     header("Location: book.php");
+                  //     exit;
+                  //   }
+                  // }
 
                 $stmt = $pdo->prepare("
                   SELECT g.Nome 
