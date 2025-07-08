@@ -2,6 +2,79 @@
 session_start();
 require_once 'includes/dbh_test.inc.php';
 
+// Funzioni per ottenere ingredienti e allergeni (come in menu.php)
+function getIngredienti(PDO $pdo, int $idProdotto): string {
+    $sql = "SELECT i.Nome FROM prodotti_ingredienti pi
+            JOIN ingrediente i ON pi.ID_Ingrediente = i.ID_Ingrediente
+            WHERE pi.ID_Prodotto = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$idProdotto]);
+    $ingredienti = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    return (count($ingredienti) === 1 && strtolower(trim($ingredienti[0])) === "nessuno") ? '' : implode(', ', $ingredienti);
+}
+
+function getAllergeni(PDO $pdo, int $idProdotto): string {
+    $sql = "SELECT a.Nome FROM prodotti_allergeni pa
+            JOIN allergene a ON pa.ID_Allergene = a.ID_Allergene
+            WHERE pa.ID_Prodotto = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$idProdotto]);
+    $allergeni = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    return (count($allergeni) === 1 && strtolower(trim($allergeni[0])) === "nessuno") ? '' : implode(', ', $allergeni);
+}
+
+// Funzione per mostrare solo 3 prodotti per la preview
+function mostraPreviewProdotti(PDO $pdo): void {
+    $sql = "SELECT * FROM prodotto LIMIT 3";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $prodotti = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($prodotti as $row) {
+        $img = 'img/default.jpg';
+        $categoria = 'altro';
+        
+        switch ((int)$row['ID_Prodotto']) {
+            case 1: $img = 'images/f1.png'; break;
+            case 2: $img = 'img/panino.jpg'; break;
+            case 3: $img = 'img/bevanda.jpg'; break;
+            case 4: $img = 'img/fritti.jpg'; break;
+        }
+
+        switch ((int)$row['ID_Categoria']) {
+            case 1: $categoria = 'pizza'; break;
+            case 2: $categoria = 'panini'; break;
+            case 3: $categoria = 'bevande'; break;
+            case 4: $categoria = 'fritti'; break;
+        }
+
+        $ingredienti = getIngredienti($pdo, $row['ID_Prodotto']);
+        $allergeni = getAllergeni($pdo, $row['ID_Prodotto']);
+
+        echo '<div class="col-sm-6 col-lg-4 all ' . $categoria . '">';
+        echo '  <div class="box">';
+        echo '    <div>';
+        echo '      <div class="img-box">';
+        echo '        <img src="' . $img . '" alt="">';
+        echo '      </div>';
+        echo '      <div class="detail-box">';
+        echo '        <div class="content-wrapper">';
+        echo '          <h5>' . htmlspecialchars($row['Nome']) . '</h5>';
+        echo '          <p>' . htmlspecialchars($row['Descrizione'] ?? 'Nessuna descrizione') . '</p>';
+        if (!empty($ingredienti)) echo '<p><strong>Ingredienti:</strong> ' . $ingredienti . '</p>';
+        if (!empty($allergeni)) echo '<p><strong>Allergeni:</strong> ' . $allergeni . '</p>';
+        echo '        </div>';
+        echo '        <div class="options">';
+        echo '          <h6>€' . number_format($row['Prezzo'], 2) . '</h6>';
+        echo '          <a href="#" class="add-to-cart" data-id="' . $row['ID_Prodotto'] . '" data-tipo="prodotto"><i class="fa fa-shopping-cart"></i></a>';
+        echo '        </div>';
+        echo '      </div>';
+        echo '    </div>';
+        echo '  </div>';
+        echo '</div>';
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto']) && isset($_SESSION['utente_id'])) {
     $utenteId = $_SESSION['utente_id'];
     $testo = trim($_POST['testo']);
@@ -54,19 +127,367 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
   <link href="css/style.css" rel="stylesheet" />
   <!-- responsive style -->
   <link href="css/responsive.css" rel="stylesheet" />
+  <!-- Menu CSS per la preview -->
 
 </head>
 
 <body>
 
-  <style>
-    .food{
-      margin-top: 50px;
+<!-- Sostituisci il tag <style> esistente con questo -->
+<style>
+  .food{
+    margin-top: 50px;
+  }
+  .header_personalizzato{
+    background: transparent;
+  }
+  
+  /* Stili specifici per la preview nella homepage */
+  .preview-menu .filters_menu {
+    display: none; /* Nascondi i filtri nella preview */
+  }
+  
+  .preview-menu .box {
+    position: relative;
+    margin-top: 25px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    overflow: hidden;
+    background: linear-gradient(to bottom, #f1f2f3 25px, #222831 25px);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 470px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+  }
+  
+  .preview-menu .box:hover {
+    transform: translateY(-5px);
+  }
+  
+  .preview-menu .img-box {
+    background: #f1f2f3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 215px;
+    border-radius: 0 0 0 45px;
+    padding: 25px;
+  }
+  
+  .preview-menu .img-box img {
+    max-width: 100%;
+    max-height: 145px;
+    transition: all 0.2s;
+  }
+  
+  .preview-menu .box:hover .img-box img {
+    transform: scale(1.1);
+  }
+  
+  .preview-menu .detail-box {
+    padding: 25px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: transparent;
+    color: #ffffff;
+    height: 255px;
+  }
+  
+  .preview-menu .detail-box h5 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .preview-menu .detail-box p {
+    font-size: 14px;
+    margin: 5px 0;
+    line-height: 1.4;
+  }
+  
+  .preview-menu .content-wrapper {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .preview-menu .content-wrapper::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .preview-menu .content-wrapper::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+  
+  .preview-menu .content-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(255, 190, 51, 0.6);
+    border-radius: 3px;
+  }
+  
+  .preview-menu .content-wrapper::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 190, 51, 0.8);
+  }
+  
+  .preview-menu .content-wrapper {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 190, 51, 0.6) rgba(255, 255, 255, 0.1);
+  }
+  
+  .preview-menu .options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    padding-top: 10px;
+    border-top: 1px solid #333;
+    visibility: visible;
+    opacity: 1;
+    min-height: 40px;
+  }
+  
+  .preview-menu .options h6 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+  }
+  
+  .preview-menu .options a {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    background: #ffbe33;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .preview-menu .options a::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
+  }
+  
+  .preview-menu .options a:hover::before {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .preview-menu .options a i {
+    color: #ffffff;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .preview-menu .options a:hover {
+    background: #e69c00;
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(255, 190, 51, 0.4);
+  }
+  
+  .preview-menu .options a:hover i {
+    transform: scale(1.2);
+    animation: cartBounce 0.6s ease;
+  }
+  
+  .preview-menu .options a:active {
+    transform: scale(0.95);
+  }
+  
+  @keyframes cartBounce {
+    0% { transform: scale(1.2); }
+    50% { transform: scale(1.4) rotate(10deg); }
+    100% { transform: scale(1.2) rotate(0deg); }
+  }
+  
+  .view-more-btn {
+    display: inline-block;
+    background: #ffbe33;
+    color: #ffffff;
+    padding: 12px 30px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin-top: 30px;
+  }
+  
+  .view-more-btn:hover {
+    background: #e69c00;
+    color: #ffffff;
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 190, 51, 0.4);
+  }
+  
+  /* Popup personalizzato per il carrello */
+  .cart-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .cart-popup.show {
+    opacity: 1;
+  }
+  
+  .popup-content {
+    background: white;
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    transform: scale(0.7);
+    transition: transform 0.3s ease;
+  }
+  
+  .cart-popup.show .popup-content {
+    transform: scale(1);
+  }
+  
+  .popup-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: #4CAF50;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: popupSuccess 0.6s ease;
+  }
+  
+  .popup-icon.error {
+    background: #f44336;
+  }
+  
+  .popup-icon i {
+    font-size: 40px;
+    color: white;
+  }
+  
+  @keyframes popupSuccess {
+    0% {
+      transform: scale(0);
+      opacity: 0;
     }
-    .header_personalizzato{
-      background: transparent;
+    50% {
+      transform: scale(1.2);
     }
-
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  .popup-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  .popup-message {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 25px;
+    line-height: 1.4;
+  }
+  
+  .popup-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .popup-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+  }
+  
+  .popup-continue {
+    background: #f5f5f5;
+    color: #333;
+  }
+  
+  .popup-continue:hover {
+    background: #e0e0e0;
+  }
+  
+  .popup-view-cart {
+    background: #ffbe33;
+    color: white;
+  }
+  
+  .popup-view-cart:hover {
+    background: #e69c00;
+    transform: translateY(-2px);
+  }
+  
+  /* Stato loading del bottone carrello */
+  .add-to-cart.loading {
+    animation: buttonLoading 1s infinite;
+    pointer-events: none;
+  }
+  
+  @keyframes buttonLoading {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+  
+  /* Responsive per popup */
+  @media (max-width: 768px) {
+    .popup-content {
+      padding: 30px 20px;
+      max-width: 300px;
+    }
+    
+    .popup-actions {
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .popup-btn {
+      width: 100%;
+    }
+  }
   </style>
 
   <div class="hero_area">
@@ -251,263 +672,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
   </div>
 
   <!-- offer section -->
-
-
   <!-- end offer section -->
 
   <!-- food section -->
-
-  <section class="food_section layout_padding-bottom food">
+  <section class="food_section layout_padding-bottom food preview-menu">
     <div class="container">
       <div class="heading_container heading_center">
         <h2>
-          Our Menu
+          Il nostro Menù
         </h2>
       </div>
 
-      <ul class="filters_menu">
-        <li class="active" data-filter="*">All</li>
-        <li data-filter=".burger">Burger</li>
-        <li data-filter=".pizza">Pizza</li>
-        <li data-filter=".pasta">Pasta</li>
-        <li data-filter=".fries">Fries</li>
-      </ul>
-
       <div class="filters-content">
         <div class="row grid">
-          <div class="col-sm-6 col-lg-4 all pizza">
-            <div class="box">
-              <div>
-                <div class="img-box">
-                  <img src="images/f1.png" alt="">
-                </div>
-                <div class="detail-box">
-                  <h5>
-                    Delicious Pizza
-                  </h5>
-                  <p>
-                    Veniam debitis quaerat officiis quasi cupiditate quo, quisquam velit, magnam voluptatem repellendus sed eaque
-                  </p>
-                  <div class="options">
-                    <h6>
-                      $20
-                    </h6>
-                    <a href="">
-                      <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
-                        <g>
-                          <g>
-                            <path d="M345.6,338.862c-29.184,0-53.248,23.552-53.248,53.248c0,29.184,23.552,53.248,53.248,53.248
-                         c29.184,0,53.248-23.552,53.248-53.248C398.336,362.926,374.784,338.862,345.6,338.862z" />
-                          </g>
-                        </g>
-                        <g>
-                          <g>
-                            <path d="M439.296,84.91c-1.024,0-2.56-0.512-4.096-0.512H112.64l-5.12-34.304C104.448,27.566,84.992,10.67,61.952,10.67H20.48
-                         C9.216,10.67,0,19.886,0,31.15c0,11.264,9.216,20.48,20.48,20.48h41.472c2.56,0,4.608,2.048,5.12,4.608l31.744,216.064
-                         c4.096,27.136,27.648,47.616,55.296,47.616h212.992c26.624,0,49.664-18.944,55.296-45.056l33.28-166.4
-                         C457.728,97.71,450.56,86.958,439.296,84.91z" />
-                          </g>
-                        </g>
-                        <g>
-                          <g>
-                            <path d="M215.04,389.55c-1.024-28.16-24.576-50.688-52.736-50.688c-29.696,1.536-52.224,26.112-51.2,55.296
-                         c1.024,28.16,24.064,50.688,52.224,50.688h1.024C193.536,443.31,216.576,418.734,215.04,389.55z" />
-                          </g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-lg-4 all burger">
-            <div class="box">
-              <div>
-                <div class="img-box">
-                  <img src="images/f2.png" alt="">
-                </div>
-                <div class="detail-box">
-                  <h5>
-                    Delicious Burger
-                  </h5>
-                  <p>
-                    Veniam debitis quaerat officiis quasi cupiditate quo, quisquam velit, magnam voluptatem repellendus sed eaque
-                  </p>
-                  <div class="options">
-                    <h6>
-                      $15
-                    </h6>
-                    <a href="">
-                      <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
-                        <g>
-                          <g>
-                            <path d="M345.6,338.862c-29.184,0-53.248,23.552-53.248,53.248c0,29.184,23.552,53.248,53.248,53.248
-                         c29.184,0,53.248-23.552,53.248-53.248C398.336,362.926,374.784,338.862,345.6,338.862z" />
-                          </g>
-                        </g>
-                        <g>
-                          <g>
-                            <path d="M439.296,84.91c-1.024,0-2.56-0.512-4.096-0.512H112.64l-5.12-34.304C104.448,27.566,84.992,10.67,61.952,10.67H20.48
-                         C9.216,10.67,0,19.886,0,31.15c0,11.264,9.216,20.48,20.48,20.48h41.472c2.56,0,4.608,2.048,5.12,4.608l31.744,216.064
-                         c4.096,27.136,27.648,47.616,55.296,47.616h212.992c26.624,0,49.664-18.944,55.296-45.056l33.28-166.4
-                         C457.728,97.71,450.56,86.958,439.296,84.91z" />
-                          </g>
-                        </g>
-                        <g>
-                          <g>
-                            <path d="M215.04,389.55c-1.024-28.16-24.576-50.688-52.736-50.688c-29.696,1.536-52.224,26.112-51.2,55.296
-                         c1.024,28.16,24.064,50.688,52.224,50.688h1.024C193.536,443.31,216.576,418.734,215.04,389.55z" />
-                          </g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-lg-4 all pizza">
-            <div class="box">
-              <div>
-                <div class="img-box">
-                  <img src="images/f3.png" alt="">
-                </div>
-                <div class="detail-box">
-                  <h5>
-                    Delicious Pizza
-                  </h5>
-                  <p>
-                    Veniam debitis quaerat officiis quasi cupiditate quo, quisquam velit, magnam voluptatem repellendus sed eaque
-                  </p>
-                  <div class="options">
-                    <h6>
-                      $17
-                    </h6>
-                    <a href="">
-                      <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
-                        <g>
-                          <g>
-                            <path d="M345.6,338.862c-29.184,0-53.248,23.552-53.248,53.248c0,29.184,23.552,53.248,53.248,53.248
-                         c29.184,0,53.248-23.552,53.248-53.248C398.336,362.926,374.784,338.862,345.6,338.862z" />
-                          </g>
-                        </g>
-                        <g>
-                          <g>
-                            <path d="M439.296,84.91c-1.024,0-2.56-0.512-4.096-0.512H112.64l-5.12-34.304C104.448,27.566,84.992,10.67,61.952,10.67H20.48
-                         C9.216,10.67,0,19.886,0,31.15c0,11.264,9.216,20.48,20.48,20.48h41.472c2.56,0,4.608,2.048,5.12,4.608l31.744,216.064
-                         c4.096,27.136,27.648,47.616,55.296,47.616h212.992c26.624,0,49.664-18.944,55.296-45.056l33.28-166.4
-                         C457.728,97.71,450.56,86.958,439.296,84.91z" />
-                          </g>
-                        </g>
-                        <g>
-                          <g>
-                            <path d="M215.04,389.55c-1.024-28.16-24.576-50.688-52.736-50.688c-29.696,1.536-52.224,26.112-51.2,55.296
-                         c1.024,28.16,24.064,50.688,52.224,50.688h1.024C193.536,443.31,216.576,418.734,215.04,389.55z" />
-                          </g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <?php mostraPreviewProdotti($pdo); ?>
         </div>
       </div>
-      <div class="btn-box">
-        <a href="menu.php">
-          View More
+      <div class="btn-box text-center">
+        <a href="menu.php" class="view-more-btn">
+          <i class="fa fa-cutlery" style="margin-right: 8px;"></i>
+          Visualizza Menu Completo
         </a>
       </div>
     </div>
@@ -516,10 +700,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
   <!-- end food section -->
 
   <!-- about section -->
-
   <section class="about_section layout_padding">
     <div class="container  ">
-
       <div class="row">
         <div class="col-md-6 ">
           <div class="img-box">
@@ -551,7 +733,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
   <!-- end book section -->
 
   <!-- client section -->
-
   <section class="client_section layout_padding-bottom food">
     <div class="container">
       <div class="heading_container heading_center psudo_white_primary mb_45">
@@ -603,49 +784,156 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
   </section>
 
   <section class="py-5 bg-light">
-  <div class="container">
-    <h3 class="text-center mb-4">Lascia una recensione</h3>
-    <form method="POST" action="index.php" class="mx-auto" style="max-width: 600px;">
-      <div class="mb-3">
-        <label for="nome" class="form-label">Nome</label>
-        <input type="text" class="form-control" id="nome" name="nome" required>
-      </div>
-      <div class="mb-3">
-        <label for="testo" class="form-label">Recensione</label>
-        <textarea class="form-control" id="testo" name="testo" rows="4" required></textarea>
-      </div>
-      <div class="mb-3 d-flex align-items-end gap-3">
-        <div class="flex-grow-1">
-          <label for="voto" class="form-label d-block">Voto</label>
-          <select class="form-select" id="voto" name="voto" required>
-            <option value="" selected disabled>Seleziona un voto</option>
-            <option value="1">1 - Pessimo</option>
-            <option value="2">2 - Scarso</option>
-            <option value="3">3 - Discreto</option>
-            <option value="4">4 - Buono</option>
-            <option value="5">5 - Eccellente</option>
-          </select>
+    <div class="container">
+      <h3 class="text-center mb-4">Lascia una recensione</h3>
+      <form method="POST" action="index.php" class="mx-auto" style="max-width: 600px;">
+        <div class="mb-3">
+          <label for="nome" class="form-label">Nome</label>
+          <input type="text" class="form-control" id="nome" name="nome" required>
         </div>
-        <div>
-          <button type="submit" class="btn btn-warning px-4">Invia</button>
+        <div class="mb-3">
+          <label for="testo" class="form-label">Recensione</label>
+          <textarea class="form-control" id="testo" name="testo" rows="4" required></textarea>
         </div>
-      </div>
-    </form>
-  </div>
-</section>
+        <div class="mb-3 d-flex align-items-end gap-3">
+          <div class="flex-grow-1">
+            <label for="voto" class="form-label d-block">Voto</label>
+            <select class="form-select" id="voto" name="voto" required>
+              <option value="" selected disabled>Seleziona un voto</option>
+              <option value="1">1 - Pessimo</option>
+              <option value="2">2 - Scarso</option>
+              <option value="3">3 - Discreto</option>
+              <option value="4">4 - Buono</option>
+              <option value="5">5 - Eccellente</option>
+            </select>
+          </div>
+          <div>
+            <button type="submit" class="btn btn-warning px-4">Invia</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
 
+  <!-- Popup personalizzato per il carrello -->
+  <div id="cart-popup" class="cart-popup">
+    <div class="popup-content">
+      <div class="popup-icon">
+        <i class="fa fa-check-circle"></i>
+      </div>
+      <h3 class="popup-title">Aggiunto al carrello!</h3>
+      <p class="popup-message">Il prodotto è stato aggiunto con successo al tuo carrello.</p>
+      <div class="popup-actions">
+        <button class="popup-btn popup-continue">Continua lo shopping</button>
+        <button class="popup-btn popup-view-cart">Visualizza carrello</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup per errori -->
+  <div id="error-popup" class="cart-popup error-popup">
+    <div class="popup-content">
+      <div class="popup-icon error">
+        <i class="fa fa-exclamation-triangle"></i>
+      </div>
+      <h3 class="popup-title">Errore</h3>
+      <p class="popup-message error-message"></p>
+      <div class="popup-actions">
+        <button class="popup-btn popup-continue">Chiudi</button>
+      </div>
+    </div>
+  </div>
 
   <!-- end client section -->
-<script>
-  window.addEventListener('scroll', function () {
-    const header = document.querySelector('header');
-    if (window.scrollY > 100) {
-      header.classList.remove('header_personalizzato');
-    } else {
-      header.classList.add('header_personalizzato');
-    }
-  });
-</script>
+  <script>
+    window.addEventListener('scroll', function () {
+      const header = document.querySelector('header');
+      if (window.scrollY > 100) {
+        header.classList.remove('header_personalizzato');
+      } else {
+        header.classList.add('header_personalizzato');
+      }
+    });
 
+    // Script per il carrello (stesso di menu.php)
+    document.addEventListener('DOMContentLoaded', () => {
+      const cartPopup = document.getElementById('cart-popup');
+      const errorPopup = document.getElementById('error-popup');
+      
+      // Funzione per mostrare popup
+      function showPopup(popup) {
+        popup.style.display = 'flex';
+        setTimeout(() => {
+          popup.classList.add('show');
+        }, 10);
+      }
+      
+      // Funzione per nascondere popup
+      function hidePopup(popup) {
+        popup.classList.remove('show');
+        setTimeout(() => {
+          popup.style.display = 'none';
+        }, 300);
+      }
+      
+      // Event listeners per i bottoni di chiusura
+      document.querySelectorAll('.popup-continue').forEach(btn => {
+        btn.addEventListener('click', () => {
+          hidePopup(cartPopup);
+          hidePopup(errorPopup);
+        });
+      });
+      
+      document.querySelector('.popup-view-cart').addEventListener('click', () => {
+        hidePopup(cartPopup);
+        window.location.href = 'cart.php';
+      });
+      
+      // Chiudi popup cliccando fuori
+      [cartPopup, errorPopup].forEach(popup => {
+        popup.addEventListener('click', (e) => {
+          if (e.target === popup) {
+            hidePopup(popup);
+          }
+        });
+      });
+      
+      // Gestione bottoni aggiungi al carrello
+      document.querySelectorAll('.add-to-cart').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.preventDefault();
+          
+          btn.classList.add('loading');
+          
+          const id = btn.dataset.id;
+          const tipo = btn.dataset.tipo;
 
-<?php include 'footer.php'; ?>
+          fetch('aggiungi_al_carrello.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: `id=${id}&tipo=${tipo}`
+          })
+          .then(res => res.text())
+          .then(msg => {
+            btn.classList.remove('loading');
+            
+            if (msg.trim() === 'success') {
+              showPopup(cartPopup);
+            } else {
+              document.querySelector('.error-message').textContent = msg;
+              showPopup(errorPopup);
+            }
+          })
+          .catch(error => {
+            btn.classList.remove('loading');
+            document.querySelector('.error-message').textContent = 'Si è verificato un errore. Riprova.';
+            showPopup(errorPopup);
+          });
+        });
+      });
+    });
+  </script>
+
+  <?php include 'footer.php'; ?>
+</body>
+</html>
