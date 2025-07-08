@@ -1,3 +1,7 @@
+<?php
+// Ottieni il nome del file corrente
+$current_page = basename($_SERVER['PHP_SELF']);
+?>
 
 <!DOCTYPE html>
 <html>
@@ -58,24 +62,24 @@
 
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav  mx-auto ">
-              <li class="nav-item active">
+              <li class="nav-item <?php echo ($current_page == 'index.php') ? 'active' : ''; ?>">
                 <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item <?php echo ($current_page == 'menu.php') ? 'active' : ''; ?>">
                 <a class="nav-link" href="menu.php">Menu</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item <?php echo ($current_page == 'about.php') ? 'active' : ''; ?>">
                 <a class="nav-link" href="about.php">About</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item <?php echo ($current_page == 'book.php') ? 'active' : ''; ?>">
                 <a class="nav-link" href="book.php">Book Table</a>
               </li>
             </ul>
             <div class="user_option">
-              <a href="register.php" class="user_link">
+              <a href="register.php" class="user_link <?php echo ($current_page == 'register.php' || $current_page == 'login.php' || $current_page == 'profile.php') ? 'active' : ''; ?>">
                 <i class="fa fa-user" aria-hidden="true"></i>
               </a>
-              <a class="cart_link" href="cart.php">
+              <a class="cart_link <?php echo ($current_page == 'cart.php') ? 'active' : ''; ?>" href="cart.php">
                 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
                   <g>
                     <g>
