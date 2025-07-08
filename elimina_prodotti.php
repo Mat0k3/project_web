@@ -460,7 +460,7 @@ if (isset($_GET['get_data'])) {
 </style>
 
 <div class="admin-container">
-    <div class="admin-header">
+    <div class="admin-header spazio">
         <h2>Gestione Eliminazioni</h2>
     </div>
 

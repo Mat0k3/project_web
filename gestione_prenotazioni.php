@@ -15,7 +15,7 @@ $prenotazioni = $stmt->fetchAll();
 <link rel="stylesheet" href="css/dashboard.css">
 
 <div class="container mt-5">
-  <h2 class="text-center mb-4">Gestione Prenotazioni</h2>
+  <h2 class="text-center mb-4 spazio">Gestione Prenotazioni</h2>
 
   <!-- PRENOTAZIONI IN SOSPESO -->
   <h4 class="mb-3" style="color: #ffbe33;">Prenotazioni in sospeso</h4>

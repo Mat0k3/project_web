@@ -15,7 +15,7 @@ $ordini = $stmt->fetchAll();
 <link rel="stylesheet" href="css/dashboard.css">
 
 <div class="container mt-5">
-  <h2 class="text-center mb-4">Gestione Ordini</h2>
+  <h2 class="text-center mb-4 spazio">Gestione Ordini</h2>
 
   <!-- ORDINI NON CONSEGNATI -->
   <h4 class="mb-3" style="color: #ffbe33;">Ordini Attivi</h4>
