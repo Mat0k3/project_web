@@ -514,11 +514,9 @@ function aggiornaContatore(qty) {
         body: new URLSearchParams({ action: 'delete', tipo: tipo, id: id })
       }).then(r => r.json()).then(data => {
         if (data.success) {
-          tr.remove();
-          document.getElementById('totale').textContent = data.totale;
-          aggiornaContatore(data.quantita_totale);
+  location.reload();
+}
 
-        }
       });
     });
   });
