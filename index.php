@@ -171,6 +171,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
 
 <!-- Sostituisci il tag <style> esistente con questo -->
 <style>
+  
+
+  .carousel-wrap {
+  position: relative;
+  margin-bottom: 100px; /* spazio sotto per evitare sovrapposizione footer */
+}
+
+.owl-carousel {
+  transition: height 0s ease;
+}
+
+.owl-carousel .item {
+  min-height: 150px; /* o quello che ti serve */
+}
+
+.owl-nav {
+  position: absolute;
+  bottom: -80px; /* distanza dal carosello */
+  left: 50%;
+  transform: translateX(-50%);
+}
   .food{
     margin-top: 50px;
   }
@@ -790,86 +811,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
 
   <!-- client section -->
   <section class="client_section layout_padding-bottom food">
-    <div class="container">
-      <div class="heading_container heading_center psudo_white_primary mb_45">
-        <h2>
-          What Says Our Customers
-        </h2>
-      </div>
-      <div class="carousel-wrap row ">
-        <div class="owl-carousel client_owl-carousel">
-          <div class="item">
-            <div class="box">
-              <div class="detail-box">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
-                </p>
-                <h6>
-                  Moana Michell
-                </h6>
-                <p>
-                  magna aliqua
-                </p>
-              </div>
-              <div class="img-box">
-                <img src="images/client1.jpg" alt="" class="box-img">
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <div class="box">
-              <div class="detail-box">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
-                </p>
-                <h6>
-                  Mike Hamell
-                </h6>
-                <p>
-                  magna aliqua
-                </p>
-              </div>
-              <div class="img-box">
-                <img src="images/client2.jpg" alt="" class="box-img">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="container">
+    <div class="heading_container heading_center psudo_white_primary mb_45">
+      <h2>What Says Our Customers</h2>
     </div>
-  </section>
 
-  <section class="py-5 bg-light">
-    <div class="container">
-      <h3 class="text-center mb-4">Lascia una recensione</h3>
-      <form method="POST" action="index.php" class="mx-auto" style="max-width: 600px;">
-        <div class="mb-3">
-          <label for="nome" class="form-label">Nome</label>
-          <input type="text" class="form-control" id="nome" name="nome" required>
-        </div>
-        <div class="mb-3">
-          <label for="testo" class="form-label">Recensione</label>
-          <textarea class="form-control" id="testo" name="testo" rows="4" required></textarea>
-        </div>
-        <div class="mb-3 d-flex align-items-end gap-3">
-          <div class="flex-grow-1">
-            <label for="voto" class="form-label d-block">Voto</label>
-            <select class="form-select" id="voto" name="voto" required>
-              <option value="" selected disabled>Seleziona un voto</option>
-              <option value="1">1 - Pessimo</option>
-              <option value="2">2 - Scarso</option>
-              <option value="3">3 - Discreto</option>
-              <option value="4">4 - Buono</option>
-              <option value="5">5 - Eccellente</option>
-            </select>
-          </div>
-          <div>
-            <button type="submit" class="btn btn-warning px-4">Invia</button>
-          </div>
-        </div>
-      </form>
+    <div class="carousel-wrap row">
+      <div class="owl-carousel client_owl-carousel">
+        <?php
+        $stmt = $pdo->prepare("
+          SELECT r.Testo, r.Voto, u.Nome 
+          FROM recensione r 
+          JOIN utente u ON r.ID_Utente = u.ID_Utente 
+          ORDER BY r.Data DESC 
+          LIMIT 10
+        ");
+        $stmt->execute();
+        $recensioni = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($recensioni as $i => $rec) {
+          $img = $i % 2 == 0 ? 'images/client1.jpg' : 'images/client2.jpg';
+          $testo_completo = htmlspecialchars($rec['Testo']);
+          $testo_troncato = strlen($testo_completo) > 150 ? substr($testo_completo, 0, 150) . '...' : $testo_completo;
+          $mostra_espandi = strlen($testo_completo) > 150;
+
+          echo '<div class="item">
+                  <div class="box">
+                    <div class="detail-box">
+                      <p class="recensione-testo">' . $testo_troncato . '</p>';
+                      if ($mostra_espandi) {
+                        echo '<a href="#" class="espandi-link text-warning" data-completo="' . htmlspecialchars($testo_completo) . '" data-troncato="' . htmlspecialchars($testo_troncato) . '">Espandi</a>';
+                      }
+          echo '<h6>' . htmlspecialchars($rec['Nome']) . '</h6>
+                      <p>';
+          for ($v = 1; $v <= 5; $v++) {
+            echo $v <= $rec['Voto'] ? '⭐' : '☆';
+          }
+          echo     '</p>
+                    </div>
+                  </div>
+                </div>';
+        }
+        ?>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- Popup personalizzato per il carrello -->
   <div id="cart-popup" class="cart-popup">
@@ -999,6 +986,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
         });
       });
     });
+
+    document.addEventListener('DOMContentLoaded', function () {
+  function aggiornaAltezzaCarousel() {
+    const itemsAttivi = document.querySelectorAll('.owl-carousel .owl-item.active .item');
+    const carousel = document.querySelector('.owl-carousel');
+    if (itemsAttivi.length > 0 && carousel) {
+      let maxHeight = 0;
+      itemsAttivi.forEach(item => {
+        maxHeight = Math.max(maxHeight, item.offsetHeight);
+      });
+      carousel.style.height = maxHeight + 'px';
+    }
+  }
+
+  document.querySelectorAll('.espandi-link').forEach(link => {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      this.blur();
+
+      const paragrafo = this.previousElementSibling;
+      const testoCompleto = this.getAttribute('data-completo');
+      const testoTroncato = this.getAttribute('data-troncato');
+
+      if (this.textContent.toLowerCase() === 'espandi') {
+        paragrafo.textContent = testoCompleto;
+        this.textContent = 'Comprimi';
+      } else {
+        paragrafo.textContent = testoTroncato;
+        this.textContent = 'Espandi';
+      }
+
+      aggiornaAltezzaCarousel();
+    });
+  });
+
+  $('.client_owl-carousel').on('changed.owl.carousel', function () {
+    setTimeout(aggiornaAltezzaCarousel, 100);
+  });
+
+  setTimeout(aggiornaAltezzaCarousel, 500);
+});
   </script>
 
   <?php include 'footer.php'; ?>

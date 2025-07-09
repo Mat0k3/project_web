@@ -19,6 +19,27 @@ $nome = $utente['Nome'] ?? 'Utente';
 $ordini = $pdo->prepare("SELECT * FROM ordinazione WHERE ID_Utente = :id ORDER BY Data DESC");
 $ordini->execute([':id' => $utente_id]);
 $lista_ordini = $ordini->fetchAll();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto']) && isset($_SESSION['utente_id'])) {
+    $utenteId = $_SESSION['utente_id'];
+    $testo = trim($_POST['testo']);
+    $voto = (int)$_POST['voto'];
+
+    if ($testo !== '' && $voto >= 1 && $voto <= 5) {
+        try {
+            $stmt = $pdo->prepare("INSERT INTO recensione (ID_Utente, Testo, Voto, Data) VALUES (?, ?, ?, CURDATE())");
+            $stmt->execute([$utenteId, $testo, $voto]);
+            header("Location: utente.php?recensione=ok");
+            exit;
+        } catch (PDOException $e) {
+            header("Location: utente.php?recensione=errore");
+            exit;
+        }
+    } else {
+        header("Location: utente.php?recensione=errore");
+        exit;
+    }
+}
 ?>
 
 <?php include 'header.php'; ?>
@@ -102,5 +123,34 @@ $lista_ordini = $ordini->fetchAll();
   </div>
 
 </div>
+
+<section class="py-5 bg-light">
+    <div class="container">
+      <h3 class="text-center mb-4">Lascia una recensione</h3>
+      <form method="POST" class="mx-auto" style="max-width: 600px;">
+        <div class="mb-3">
+          <label for="testo" class="form-label">Recensione</label>
+          <textarea class="form-control" id="testo" name="testo" rows="4" required></textarea>
+        </div>
+        <div class="mb-3 d-flex align-items-end gap-3">
+          <div class="flex-grow-1">
+            <label for="voto" class="form-label d-block">Voto</label>
+            <select class="" id="voto" name="voto" required>
+              <option value="" selected disabled>Seleziona un voto</option>
+              <option value="1">1 - Pessimo</option>
+              <option value="2">2 - Scarso</option>
+              <option value="3">3 - Discreto</option>
+              <option value="4">4 - Buono</option>
+              <option value="5">5 - Eccellente</option>
+            </select>
+          </div>
+          <div>
+            <button type="submit" class="btn btn-warning px-4">Invia</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+  
 
 <?php include 'footer.php'; ?>
