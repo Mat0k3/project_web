@@ -435,6 +435,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const tipo = btn.dataset.tipo;
 
+      const counter = document.getElementById('counter');
+      if (counter.classList.contains('invisible')) {
+        counter.classList.remove('invisible')
+        
+        counter.textContent =  1;
+      } else {
+        let current = parseInt(counter.textContent) || 0;
+        counter.textContent = current +1;
+      }
+
+
 
 
       fetch('aggiungi_al_carrello.php', {

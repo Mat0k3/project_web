@@ -90,9 +90,27 @@ if (!isset($_SESSION['utente_id'])) {
     $stmt = $pdo->prepare("SELECT m.Prezzo, mc.Quantità FROM menu_carrello mc JOIN menu m USING(ID_Menu) WHERE mc.ID_Carrello = ?");
     $stmt->execute([$cartId]);
     foreach ($stmt->fetchAll() as $r) $tot += $r['Prezzo'] * $r['Quantità'];
+
+    // Calcolo quantità totale
+    $stmt = $pdo->prepare("SELECT SUM(Quantità) FROM prodotti_carrello WHERE ID_Carrello = ?");
+    $stmt->execute([$cartId]);
+    $quantitaProdotti = (int) $stmt->fetchColumn();
+
+    $stmt = $pdo->prepare("SELECT SUM(Quantità) FROM menu_carrello WHERE ID_Carrello = ?");
+    $stmt->execute([$cartId]);
+    $quantitaMenu = (int) $stmt->fetchColumn();
+
+    $quantitaTotale = $quantitaProdotti + $quantitaMenu;
+
   
-    echo json_encode(['success' => true, 'totale' => number_format($tot, 2)]);
+    echo json_encode([
+      'success' => true,
+      'totale' => number_format($tot, 2),
+      'quantita_totale' => $quantitaTotale
+    ]);
+    
     exit;
+
   }
   
   // Caricamento dati carrello
@@ -448,6 +466,18 @@ if (!isset($_SESSION['utente_id'])) {
   </section>
   
   <script>
+
+function aggiornaContatore(qty) {
+  const counter = document.getElementById('counter');
+  if (qty > 0) {
+    counter.textContent = qty;
+    counter.style.display = 'flex';
+  } else {
+    counter.textContent = '';
+    counter.style.display = 'none';
+  }
+}
+
   document.querySelectorAll('input[type=number]').forEach(input => {
     input.addEventListener('change', e => {
       const tr = e.target.closest('tr');
@@ -463,7 +493,10 @@ if (!isset($_SESSION['utente_id'])) {
         if (data.success) {
             const prezzoBase = parseFloat(tr.querySelector('.prezzo').textContent.replace(/[^\d.]/g, '')) / e.target.defaultValue;
             tr.querySelector('.prezzo').textContent = '€ ' + (prezzoBase * qty).toFixed(2);
+            const counter = document.getElementById('counter');
             document.getElementById('totale').textContent = data.totale;
+            aggiornaContatore(data.quantita_totale);
+
             e.target.defaultValue = qty;
         }
       });
@@ -483,6 +516,8 @@ if (!isset($_SESSION['utente_id'])) {
         if (data.success) {
           tr.remove();
           document.getElementById('totale').textContent = data.totale;
+          aggiornaContatore(data.quantita_totale);
+
         }
       });
     });

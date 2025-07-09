@@ -1,10 +1,44 @@
 <?php
 // Ottieni il nome del file corrente
 $current_page = basename($_SERVER['PHP_SELF']);
+require_once 'includes/dbh.inc.php';
 
 // Controlla se l'utente è loggato (assumendo che usi le sessioni)
 $user_logged_in = isset($_SESSION['utente_id']);
 $user_name = $user_logged_in ? $_SESSION['utente_nome'] : null;
+$sql_carrello = "SELECT ID_Carrello FROM carrello WHERE ID_Utente = :id_utente";
+$stmt = $pdo->prepare($sql_carrello);
+$stmt->bindParam(':id_utente',$_SESSION['utente_id'], PDO::PARAM_INT);
+$stmt->execute();
+
+$carrello = $stmt->fetch(PDO::FETCH_ASSOC);
+$quantita_totale = 0;
+if ($carrello) {
+    $id_carrello = $carrello['ID_Carrello'];
+
+    // Ora somma le quantità nel carrello
+    $sql_quantita = "SELECT SUM(Quantità) AS totale_quantita FROM prodotti_carrello WHERE ID_Carrello = :id_carrello";
+    $stmt = $pdo->prepare($sql_quantita);
+    $stmt->bindParam(':id_carrello', $id_carrello, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $quantita_totale1 = $row['totale_quantita'] ?? 0;
+
+    $sql_quantita = "SELECT SUM(Quantità) AS totale_quantita FROM menu_carrello WHERE ID_Carrello = :id_carrello";
+    $stmt = $pdo->prepare($sql_quantita);
+    $stmt->bindParam(':id_carrello', $id_carrello, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $quantita_totale2 = $row['totale_quantita'] ?? 0;
+    $quantita_totale= $quantita_totale1 +$quantita_totale2;
+    
+
+}else{
+  echo "";
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -133,6 +167,13 @@ $user_name = $user_logged_in ? $_SESSION['utente_nome'] : null;
                   <g>
                   </g>
                 </svg>
+                <?php
+                if ($quantita_totale > 0) {
+                    echo '<div id="counter">' . $quantita_totale . '</div>';
+                } else {
+                    echo '<div id="counter" class="invisible"></div>';
+                }
+                ?>
               </a>
               
               <!-- Sezione utente con nome se loggato -->
