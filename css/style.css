@@ -1470,3 +1470,20 @@ a:focus {
 .visible {
   display: flex;
 }
+.intro_section {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.1));
+}
+
+.intro_section .btn {
+  font-weight: 600;
+  color: white;
+  background-color: #ffbe33;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.intro_section .btn:hover {
+  background-color: #e69c00;
+  transform: scale(1.05);
+}
+
