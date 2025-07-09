@@ -1389,3 +1389,53 @@ a:focus {
 .user_option .cart_link.active svg {
   fill: #ffbe33 !important;
 }
+/* Stili per la sezione utente */
+.user_profile,
+.user_auth {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.user_profile .user_link,
+.user_auth .user_link {
+  display: flex;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  padding: 8px 20px;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  background-color: #ffbe33;
+  border: 2px solid transparent;
+}
+
+.user_profile .user_link:hover,
+.user_auth .user_link:hover,
+.user_profile .user_link.active,
+.user_auth .user_link.active {
+  background-color: white;
+  color: #ffbe33;
+  border-color: #ffbe33;
+}
+
+.user_name,
+.auth_text {
+  margin-left: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Responsive per dispositivi mobili */
+@media (max-width: 768px) {
+  .user_name,
+  .auth_text {
+    display: none;
+  }
+  
+  .user_profile .user_link,
+  .user_auth .user_link {
+    padding: 8px 12px;
+    border-radius: 50%;
+  }
+}

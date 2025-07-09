@@ -99,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <?php include 'header.php'; ?>
 
 <div class="register-wrapper">
-  <div class="register-card">
+  <div class="register-card spazio">
     <h3 class="text-center mb-4">Login</h3>
 
     <?php if ($errore): ?>

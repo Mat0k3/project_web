@@ -2,6 +2,12 @@
 session_start();
 require_once 'includes/dbh_test.inc.php';
 
+$current_page = basename($_SERVER['PHP_SELF']);
+
+// Controlla se l'utente è loggato (assumendo che usi le sessioni)
+$user_logged_in = isset($_SESSION['utente_id']);
+$user_name = $user_logged_in ? $_SESSION['utente_nome'] : null;
+
 // Funzioni per ottenere ingredienti e allergeni (come in menu.php)
 function getIngredienti(PDO $pdo, int $idProdotto): string {
     $sql = "SELECT i.Nome FROM prodotti_ingredienti pi
@@ -510,24 +516,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
 
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav  mx-auto ">
-              <li class="nav-item active">
+              <li class="nav-item <?php echo ($current_page == 'index.php') ? 'active' : ''; ?>">
                 <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item <?php echo ($current_page == 'menu.php') ? 'active' : ''; ?>">
                 <a class="nav-link" href="menu.php">Menu</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item <?php echo ($current_page == 'about.php') ? 'active' : ''; ?>">
                 <a class="nav-link" href="about.php">About</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item <?php echo ($current_page == 'book.php') ? 'active' : ''; ?>">
                 <a class="nav-link" href="book.php">Book Table</a>
               </li>
             </ul>
             <div class="user_option">
-              <a href="register.php" class="user_link">
-                <i class="fa fa-user" aria-hidden="true"></i>
-              </a>
-              <a class="cart_link" href="cart.php">
+              <a class="cart_link <?php echo ($current_page == 'cart.php') ? 'active' : ''; ?>" href="cart.php">
                 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
                   <g>
                     <g>
@@ -581,9 +584,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
                   </g>
                 </svg>
               </a>
-              <a href="prova_prodotto.php" class="order_online">
-                Order Online
-              </a>
+              
+              <!-- Sezione utente con nome se loggato -->
+              <?php if ($user_logged_in): ?>
+                <div class="user_profile">
+                  <a href="login.php" class="user_link <?php echo ($current_page == 'utente.php'||$current_page == 'dashboard_dinamica.php'||$current_page == 'login.php') ? 'active' : ''; ?>">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <span class="user_name"><?php echo htmlspecialchars($user_name); ?></span>
+                  </a>
+                </div>
+              <?php else: ?>
+                <div class="user_auth">
+                  <a href="login.php" class="user_link <?php echo ($current_page == 'login.php' || $current_page == 'register.php') ? 'active' : ''; ?>">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <span class="auth_text">Accedi</span>
+                  </a>
+                </div>
+              <?php endif; ?>
             </div>
           </div>
         </nav>
