@@ -364,6 +364,39 @@ $prodotti_fritti = $pdo->query("SELECT ID_Prodotto, Nome FROM prodotto WHERE ID_
     display: none;
     backdrop-filter: blur(5px);
 }
+/* Stile per l'icona fa-plus-circle nel popup di conferma */
+.confirm-popup .success-icon {
+    color:#f39c12; /* Verde successo */
+    font-size: 80px; /* Aumentato da 60px a 80px */
+    margin-bottom: 20px;
+    animation: checkmark 0.6s ease-in-out;
+    /*text-shadow: 0 0 20px rgba(39, 174, 96, 0.5);*/ /* Effetto glow */
+}
+
+
+/* Variante con colore personalizzato */
+.confirm-popup .success-icon.custom {
+    color: #f39c12; /* Arancione dorato */
+    font-size: 90px; /* Ancora più grande */
+    margin-bottom: 20px;
+    animation: checkmark 0.6s ease-in-out;
+    text-shadow: 0 0 25px rgba(243, 156, 18, 0.6);
+}
+
+/* Animazione pulsante per maggiore impatto */
+@keyframes pulse-icon {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Applicare l'animazione pulsante */
+.confirm-popup .success-icon.pulse {
+    color: #f39c12;
+    font-size: 85px;
+    margin-bottom: 20px;
+    animation: pulse-icon 2s infinite;
+}
 </style>
 <div class="admin-container">
     <div class="admin-header spazio">
@@ -567,7 +600,7 @@ $prodotti_fritti = $pdo->query("SELECT ID_Prodotto, Nome FROM prodotto WHERE ID_
 <!-- Popup di Conferma Personalizzato -->
 <div class="confirm-overlay" id="confirm-overlay"></div>
 <div class="confirm-popup" id="confirm-popup">
-    <div class="success-icon">
+    <div class="success-icon pulse">
         <i class="fas fa-plus-circle"></i>
     </div>
     <h3>Conferma Aggiunta</h3>
