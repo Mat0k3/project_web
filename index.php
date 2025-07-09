@@ -683,7 +683,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
           Vieni a scoprire i nostri piatti unici preparati con ingredienti freschi e amore.
         </p>
         <a href="book.php" class="btn btn-warning btn-lg px-5 py-2 rounded-pill">
-          Mangia con noi
+          Mangia da noi
         </a>
       </div>
     </div>
