@@ -74,6 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   'password' => $_POST['password']
               ];
               $_SESSION['utente_id'] = $id_utente;
+              $_SESSION['utente_nome'] = $nome;
               header("Location: utente.php?");
               exit;
           }
