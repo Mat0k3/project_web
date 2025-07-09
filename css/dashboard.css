@@ -6,7 +6,7 @@ h2 {
 
 .stat-card {
   background-color: #fff3cd;
-  border: 1px solid #ffeeba;
+  border: 1px solid #faca3a;
   border-radius: 10px;
   padding: 20px;
   text-align: center;
@@ -19,7 +19,7 @@ h2 {
 
 .stat-card h5 {
   font-size: 1.3rem;
-  color: #333;
+  color: #191919;
 }
 
 .stat-card p {
@@ -27,7 +27,7 @@ h2 {
   font-weight: bold;
   color: #ffbe33;
 }
-
+/*
 .dashboard-btn {
   margin: 10px;
   background-color: #ffbe33;
@@ -57,6 +57,46 @@ h2 {
   background-color: #e6a600;
   color: #fff;
   transform: scale(1.02);
+}
+*/
+
+.buttons-container-dashboard {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem; /* Spazio tra i bottoni */
+}
+
+.buttons-container-dashboard .admin-btn {
+  flex: 0 0 95%; /* 100% width di default (4x1) */
+}
+
+@media (min-width: 992px) {
+  .buttons-container-dashboard .admin-btn {
+    flex: 0 0 48%; /* Circa due per riga (2x2) con margine */
+  }
+}
+
+.dashboard-btn-block {
+  display: block;
+  color: #333;
+  width: 100%;
+  height: 100%;
+  padding: 1.5rem;
+  border-radius: 15px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: background-color 0.3s ease;
+}
+
+.admin-btn {
+  padding: 0; /* Rimuovi padding che blocca il clic */
+}
+
+.dashboard-btn-block:hover {
+  color: #333;
 }
 
 .btn-style {
@@ -114,3 +154,5 @@ h2 {
   background-color: #dc3545;
   color: #fff;
 }
+
+

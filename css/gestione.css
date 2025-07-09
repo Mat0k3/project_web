@@ -39,7 +39,7 @@ body {
 
 /* Bottoni principali - gialli come nelle immagini */
 .admin-btn {
-    background: #f39c12;
+    background: #ffbe33;
     color: #333;
     border: none;
     padding: 25px 30px;
@@ -69,7 +69,7 @@ body {
 .admin-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4);
-    background: #e67e22;
+    background: #e5ab2d;    /* #cc9828 */
 }
 
 .admin-btn:hover::before {

@@ -1445,10 +1445,10 @@ a:focus {
   right: -12px;
   background-color: #ffbe33;
   color: #ffffff;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: bold;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1456,6 +1456,7 @@ a:focus {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
   z-index: 10;
+  border: 2px solid #262e31;
 }
 
 .cart_link {

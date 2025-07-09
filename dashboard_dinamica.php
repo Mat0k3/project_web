@@ -53,6 +53,8 @@ if ($mostra_saldo) {
 ?>
 
 <?php include 'header.php'; ?>
+
+<link rel="stylesheet" href="css/gestione.css">
 <link rel="stylesheet" href="css/dashboard.css">
 
 <div class="container mt-5 ">
@@ -90,9 +92,10 @@ if ($mostra_saldo) {
         $num_servizi = count($servizi_utili);
         $aggiungi_spazio_extra = $num_servizi <= 2;
     ?>
-    <div class="row g-4 margine_basso <?php echo $aggiungi_spazio_extra ? 'extra-bottom-space' : ''; ?>">
-      <?php
-        
+    <div class="g-4 margine_basso <?php echo $aggiungi_spazio_extra ? 'extra-bottom-space' : ''; ?>">
+      <div class="row buttons-container-dashboard">
+        <?php
+          
         $index = 0;
 
         foreach ($servizi_utili as $nome_servizio):
@@ -104,12 +107,13 @@ if ($mostra_saldo) {
             $is_last_odd = ($num_servizi % 2 === 1) && ($index === $num_servizi);
             $col_class = $is_last_odd ? 'col-12 col-md-6 offset-md-3' : 'col-12 col-md-6';
         ?>
-        <div class="<?php echo $col_class; ?>">
+        <div class="<?php echo $col_class; ?> admin-btn text-center">
             <a href="<?php echo $link; ?>" class="dashboard-btn-block text-center">
             <?php echo ucfirst($nome_servizio); ?>
             </a>
         </div>
         <?php endforeach; ?>
+      </div>
 
     </div>
   <?php endif; ?>
