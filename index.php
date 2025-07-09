@@ -670,7 +670,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
     <!-- slider section -->
     <section class="intro_section d-flex align-items-center" style="min-height: 100vh; position: relative;">
   <div class="bg-box">
-    <img src="images/hero-bg-gpt.jpg" alt="">
   </div>
   <div class="container position-relative text-white text-center">
     <div class="row justify-content-center">
