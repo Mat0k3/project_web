@@ -79,54 +79,51 @@ function mostraProdotti(PDO $pdo, ?int $idCategoria = null): void {
   }
 
   foreach ($prodotti as $row) {
-      $img = 'img/default.jpg';
-      $categoria = 'altro';
-      
-      switch ((int)$row['ID_Prodotto']) {
-        case 1: $img = 'images/f1.png'; break;
-        case 2: $img = 'img/panino.jpg'; break;
-        case 3: $img = 'img/bevanda.jpg'; break;
-        case 4: $img = 'img/fritti.jpg'; break;
-      }
+    // Usa l'immagine dal database o una predefinita
+    $img = !empty($row['Immagine']) ? 'uploads/prodotti/' . htmlspecialchars($row['Immagine']) : 'img/default.jpg';
 
-      switch ((int)$row['ID_Categoria']) {
-          case 1: $categoria = 'pizza'; break;
-          case 2: $categoria = 'panini'; break;
-          case 3: $categoria = 'bevande'; break;
-          case 4: $categoria = 'fritti'; break;
-      }
+    // Determina la categoria del prodotto
+    $categoria = 'altro';
+    switch ((int)$row['ID_Categoria']) {
+        case 1: $categoria = 'pizza'; break;
+        case 2: $categoria = 'panini'; break;
+        case 3: $categoria = 'bevande'; break;
+        case 4: $categoria = 'fritti'; break;
+    }
 
-      $ingredienti = getIngredienti($pdo, $row['ID_Prodotto']);
-      $allergeni = getAllergeni($pdo, $row['ID_Prodotto']);
+    // Recupera ingredienti e allergeni
+    $ingredienti = getIngredienti($pdo, $row['ID_Prodotto']);
+    $allergeni = getAllergeni($pdo, $row['ID_Prodotto']);
 
-      echo '<div class="col-sm-6 col-lg-4 all ' . $categoria . '">';
-      echo '  <div class="box">';
-      echo '    <div>';
-      echo '      <div class="img-box">';
-      echo '        <img src="' . $img . '" alt="">';
-      echo '      </div>';
-      echo '      <div class="detail-box">';
-      echo '        <div class="content-wrapper">';
-      echo '          <h5>' . htmlspecialchars($row['Nome']) . '</h5>';
-      echo '          <p>' . htmlspecialchars($row['Descrizione'] ?? 'Nessuna descrizione') . '</p>';
-      if (!empty($ingredienti)) echo '<p><strong>Ingredienti:</strong> ' . $ingredienti . '</p>';
-      if (!empty($allergeni)) echo '<p><strong>Allergeni:</strong> ' . $allergeni . '</p>';
-      echo '        </div>';
-      echo '        <div class="options">';
-      echo '          <h6>€' . number_format($row['Prezzo'], 2) . '</h6>';
-      
-      if ($canAddToCart) {
-          echo '          <a href="#" class="add-to-cart" data-id="' . $row['ID_Prodotto'] . '" data-tipo="prodotto"><i class="fa fa-shopping-cart"></i></a>';
-      } else {
-          echo '          <span class="add-to-cart disabled" title="Accesso limitato"><i class="fa fa-lock"></i></span>';
-      }
-      
-      echo '        </div>';
-      echo '      </div>';
-      echo '    </div>';
-      echo '  </div>';
-      echo '</div>';
-  }
+    // Genera l'HTML per il prodotto
+    echo '<div class="col-sm-6 col-lg-4 all ' . $categoria . '">';
+    echo '  <div class="box">';
+    echo '    <div>';
+    echo '      <div class="img-box">';
+    echo '        <img src="' . $img . '" alt="Immagine prodotto">';
+    echo '      </div>';
+    echo '      <div class="detail-box">';
+    echo '        <div class="content-wrapper">';
+    echo '          <h5>' . htmlspecialchars($row['Nome']) . '</h5>';
+    echo '          <p>' . htmlspecialchars($row['Descrizione'] ?? 'Nessuna descrizione') . '</p>';
+    if (!empty($ingredienti)) echo '<p><strong>Ingredienti:</strong> ' . $ingredienti . '</p>';
+    if (!empty($allergeni)) echo '<p><strong>Allergeni:</strong> ' . $allergeni . '</p>';
+    echo '        </div>';
+    echo '        <div class="options">';
+    echo '          <h6>€' . number_format($row['Prezzo'], 2) . '</h6>';
+    
+    if ($canAddToCart) {
+        echo '          <a href="#" class="add-to-cart" data-id="' . $row['ID_Prodotto'] . '" data-tipo="prodotto"><i class="fa fa-shopping-cart"></i></a>';
+    } else {
+        echo '          <span class="add-to-cart disabled" title="Accesso limitato"><i class="fa fa-lock"></i></span>';
+    }
+    
+    echo '        </div>';
+    echo '      </div>';
+    echo '    </div>';
+    echo '  </div>';
+    echo '</div>';
+}
 }
 
 
@@ -142,36 +139,39 @@ function mostraMenu(PDO $pdo): void {
   }
 
   foreach ($menuList as $menu) {
-      echo '<div class="col-sm-6 col-lg-4 all menu">';
-      echo '  <div class="box">';
-      echo '    <div>';
-      echo '      <div class="img-box">';
-      echo '        <img src="img/menu.jpg" alt="">';
-      echo '      </div>';
-      echo '      <div class="detail-box">';
-      echo '        <div class="content-wrapper">';
-      echo '          <h5>' . htmlspecialchars($menu['Nome']) . '</h5>';
-      echo '          <p>' . htmlspecialchars($menu['Descrizione'] ?? 'Nessuna descrizione') . '</p>';
-      $stmtProd = $pdo->prepare("SELECT p.Nome FROM prodotti_menu pm JOIN prodotto p ON pm.ID_Prodotto = p.ID_Prodotto WHERE pm.ID_Menu = ?");
-      $stmtProd->execute([$menu['ID_Menu']]);
-      $prodotti = $stmtProd->fetchAll(PDO::FETCH_COLUMN);
-      echo '          <p><strong>Prodotti:</strong> ' . ($prodotti ? implode(', ', $prodotti) : 'Nessuno') . '</p>';
-      echo '        </div>';
-      echo '        <div class="options">';
-      echo '          <h6>€' . number_format((float)($menu['Prezzo'] ?? 0), 2) . '</h6>';
-      
-      if ($canAddToCart) {
-          echo '          <a href="#" class="add-to-cart" data-id="' . $menu['ID_Menu'] . '" data-tipo="menu"><i class="fa fa-shopping-cart"></i></a>';
-      } else {
-          echo '          <span class="add-to-cart disabled" title="Accesso limitato"><i class="fa fa-lock"></i></span>';
-      }
-      
-      echo '        </div>';
-      echo '      </div>';
-      echo '    </div>';
-      echo '  </div>';
-      echo '</div>';
-  }
+    // Usa l'immagine dal database o una predefinita
+    $img = !empty($menu['Immagine']) ? 'uploads/menu/' . htmlspecialchars($menu['Immagine']) : 'img/default.jpg';
+
+    echo '<div class="col-sm-6 col-lg-4 all menu">';
+    echo '  <div class="box">';
+    echo '    <div>';
+    echo '      <div class="img-box">';
+    echo '        <img src="' . $img . '" alt="Immagine menu">';
+    echo '      </div>';
+    echo '      <div class="detail-box">';
+    echo '        <div class="content-wrapper">';
+    echo '          <h5>' . htmlspecialchars($menu['Nome']) . '</h5>';
+    echo '          <p>' . htmlspecialchars($menu['Descrizione'] ?? 'Nessuna descrizione') . '</p>';
+    $stmtProd = $pdo->prepare("SELECT p.Nome FROM prodotti_menu pm JOIN prodotto p ON pm.ID_Prodotto = p.ID_Prodotto WHERE pm.ID_Menu = ?");
+    $stmtProd->execute([$menu['ID_Menu']]);
+    $prodotti = $stmtProd->fetchAll(PDO::FETCH_COLUMN);
+    echo '          <p><strong>Prodotti:</strong> ' . ($prodotti ? implode(', ', $prodotti) : 'Nessuno') . '</p>';
+    echo '        </div>';
+    echo '        <div class="options">';
+    echo '          <h6>€' . number_format((float)($menu['Prezzo'] ?? 0), 2) . '</h6>';
+    
+    if ($canAddToCart) {
+        echo '          <a href="#" class="add-to-cart" data-id="' . $menu['ID_Menu'] . '" data-tipo="menu"><i class="fa fa-shopping-cart"></i></a>';
+    } else {
+        echo '          <span class="add-to-cart disabled" title="Accesso limitato"><i class="fa fa-lock"></i></span>';
+    }
+    
+    echo '        </div>';
+    echo '      </div>';
+    echo '    </div>';
+    echo '  </div>';
+    echo '</div>';
+}
 }
 ?>
 
