@@ -431,6 +431,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
     border: 2px solid #f39c12;
     transition: transform 0.3s ease;
   }
+  .popup-content-error{
+    border: 2px solid #f44336;
+  }
   
   .cart-popup.show .popup-content {
     transform: scale(1);
@@ -509,7 +512,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
   }
   
   .popup-continue:hover {
-    background: #e0e0e0;
+    background: #f5f5f5;
   }
   
   .popup-view-cart {
@@ -566,6 +569,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
     margin-bottom: 20px;
     animation: checkmark 0.6s ease-in-out;
     /*text-shadow: 0 0 20px rgba(39, 174, 96, 0.5);*/ /* Effetto glow */
+  }
+  .popup-error{
+    border: 1px solid rgba(244, 67, 54, 0);
+  }
+  .popup-error:hover{
+    border: 1px solid rgba(244, 67, 54, 1);
+  }
+  .popup-sium{
+    border: 1px solid rgba(255, 190, 51, 0);
+  }
+  .popup-sium:hover{
+    border: 1px solid rgba(255, 190, 51, 1);
   }
 
   </style>
@@ -832,7 +847,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
       <h3 class="popup-title">Aggiunto al carrello!</h3>
       <p class="popup-message">Il prodotto è stato aggiunto con successo al tuo carrello.</p>
       <div class="popup-actions">
-        <button class="popup-btn popup-continue">Continua lo shopping</button>
+        <button class="popup-btn popup-continue popup-sium">Continua lo shopping</button>
         <button class="popup-btn popup-view-cart">Visualizza carrello</button>
       </div>
     </div>
@@ -840,14 +855,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
 
   <!-- Popup per errori -->
   <div id="error-popup" class="cart-popup error-popup">
-    <div class="popup-content">
+    <div class="popup-content popup-content-error">
       <div class="popup-icon error">
         <i class="fa fa-exclamation-triangle"></i>
       </div>
       <h3 class="popup-title">Errore</h3>
       <p class="popup-message error-message"></p>
-      <div class="popup-actions">
-        <button class="popup-btn popup-continue">Chiudi</button>
+      <div class="popup-actions ">
+        <button class="popup-btn popup-continue popup-error">Chiudi</button>
       </div>
     </div>
   </div>

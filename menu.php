@@ -287,7 +287,7 @@ function mostraMenu(PDO $pdo): void {
 
     <div class="popup-actions">
 
-      <button class="popup-btn popup-continue">Continua lo shopping</button>
+      <button class="popup-btn popup-continue popup-sium">Continua lo shopping</button>
 
       <button class="popup-btn popup-view-cart">Visualizza carrello</button>
 
@@ -303,7 +303,7 @@ function mostraMenu(PDO $pdo): void {
 
 <div id="error-popup" class="cart-popup error-popup">
 
-  <div class="popup-content">
+  <div class="popup-content popup-content-error">
 
     <div class="popup-icon error">
 
@@ -317,7 +317,7 @@ function mostraMenu(PDO $pdo): void {
 
     <div class="popup-actions">
 
-      <button class="popup-btn popup-continue">Chiudi</button>
+      <button class="popup-btn popup-continue popup-error">Chiudi</button>
 
     </div>
 
