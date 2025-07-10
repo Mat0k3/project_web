@@ -175,25 +175,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
 <style>
   
 
-.carousel-wrap {
-  position: relative;
-  margin-bottom: 100px; /* spazio sotto per evitare sovrapposizione footer */
-}
+  .carousel-wrap {
+    position: relative;
+    margin-bottom: 100px; /* spazio sotto per evitare sovrapposizione footer */
+  }
 
-.owl-carousel {
-  transition: height 0s ease;
-}
+  .owl-carousel {
+    transition: height 0s ease;
+  }
 
-.owl-carousel .item {
-  min-height: 150px; /* o quello che ti serve */
-}
+  .owl-carousel .item {
+    min-height: 150px; /* o quello che ti serve */
+  }
 
-.owl-nav {
-  position: absolute;
-  bottom: -80px; /* distanza dal carosello */
-  left: 50%;
-  transform: translateX(-50%);
-}
+  .owl-nav {
+    position: absolute;
+    bottom: -80px; /* distanza dal carosello */
+    left: 50%;
+    transform: translateX(-50%);
+  }
   .food{
     margin-top: 50px;
   }
@@ -547,6 +547,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
     
     .popup-btn {
       width: 100%;
+    }
+
+    .header_personalizzato{
+      background: #262e31;
     }
 
     
