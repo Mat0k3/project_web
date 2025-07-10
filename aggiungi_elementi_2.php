@@ -44,22 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $prodotto_panino = !empty($_POST['prodotto_panino']) ? $_POST['prodotto_panino'] : null;
                 $prodotto_bevanda = !empty($_POST['prodotto_bevanda']) ? $_POST['prodotto_bevanda'] : null;
                 $prodotto_fritti = !empty($_POST['prodotto_fritti']) ? $_POST['prodotto_fritti'] : null;
-                $immagine = null;
-
-                if (isset($_FILES['immagine']) && $_FILES['immagine']['error'] === UPLOAD_ERR_OK) {
-                    $uploadDir = 'uploads/menu/';
-                    if (!is_dir($uploadDir)) {
-                        mkdir($uploadDir, 0777, true);
-                    }
-                    $fileName = uniqid() . '_' . basename($_FILES['immagine']['name']);
-                    $filePath = $uploadDir . $fileName;
-            
-                    if (move_uploaded_file($_FILES['immagine']['tmp_name'], $filePath)) {
-                        $immagine = $fileName;
-                    } else {
-                        throw new Exception('Errore durante il caricamento dell\'immagine');
-                    }
-                }
+                
                 // Verifica se il menu esiste già
                 $stmt = $pdo->prepare("SELECT COUNT(*) FROM menu WHERE LOWER(Nome) = LOWER(?)");
                 $stmt->execute([$nome]);
@@ -68,8 +53,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 }
                 
                 // Inserisci il menu - MODIFICATA per includere il prezzo
-                $stmt = $pdo->prepare("INSERT INTO menu (Nome, Descrizione, Prezzo, Immagine) VALUES (?, ?, ?, ?)");
-                $stmt->execute([$nome, $descrizione, $prezzo, $immagine]);
+                $stmt = $pdo->prepare("INSERT INTO menu (Nome, Descrizione, Prezzo) VALUES (?, ?, ?)");
+                $stmt->execute([$nome, $descrizione, $prezzo]);
                 $menu_id = $pdo->lastInsertId();
                 
                 // Collega i prodotti al menu
@@ -94,22 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $categoria_id = $_POST['categoria_id'];
                 $ingredienti = isset($_POST['ingredienti']) ? array_filter($_POST['ingredienti']) : [];
                 $allergeni = isset($_POST['allergeni']) ? array_filter($_POST['allergeni']) : [];
-                $immagine = null;
-                if (isset($_FILES['immagine']) && $_FILES['immagine']['error'] === UPLOAD_ERR_OK) {
-                    $uploadDir = 'uploads/prodotti/';
-                    if (!is_dir($uploadDir)) {
-                        mkdir($uploadDir, 0777, true);
-                    }
-                    $fileName = uniqid() . '_' . basename($_FILES['immagine']['name']);
-                    $filePath = $uploadDir . $fileName;
-            
-                    if (move_uploaded_file($_FILES['immagine']['tmp_name'], $filePath)) {
-                        $immagine = $fileName;
-                    } else {
-                        throw new Exception('Errore durante il caricamento dell\'immagine');
-                    }
-                }
-
+                
                 // Verifica se il prodotto esiste già
                 $stmt = $pdo->prepare("SELECT COUNT(*) FROM prodotto WHERE LOWER(Nome) = LOWER(?)");
                 $stmt->execute([$nome]);
@@ -118,8 +88,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 }
                 
                 // Inserisci il prodotto
-                $stmt = $pdo->prepare("INSERT INTO prodotto (Nome, Prezzo, Descrizione, ID_Categoria, Immagine) VALUES (?, ?, ?, ?, ?)");
-                $stmt->execute([$nome, $prezzo, $descrizione, $categoria_id, $immagine]);
+                $stmt = $pdo->prepare("INSERT INTO prodotto (Nome, Prezzo, Descrizione, ID_Categoria) VALUES (?, ?, ?, ?)");
+                $stmt->execute([$nome, $prezzo, $descrizione, $categoria_id]);
                 $prodotto_id = $pdo->lastInsertId();
                 
                 // Collega ingredienti
@@ -169,13 +139,6 @@ $prodotti_fritti = $pdo->query("SELECT ID_Prodotto, Nome FROM prodotto WHERE ID_
 <link rel="stylesheet" href="css/gestione.css">
 
 <style>
-img {
-    max-width: 100%;
-    height: auto;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-top: 10px;
-}
 /* Miglioramenti per la selezione degli elementi */
 .item-checkbox {
     cursor: pointer;
@@ -516,11 +479,6 @@ img {
             <input type="text" id="nome-menu" name="nome" class="form-control" required>
         </div>
         <div class="form-group">
-    <label for="immagine-menu">Immagine</label>
-    <input type="file" id="immagine-menu" name="immagine" class="form-control" accept="image/*" onchange="previewImage(event, 'menu-preview')">
-    <img id="menu-preview" src="#" alt="Anteprima immagine" style="display: none; margin-top: 10px; max-width: 100%; height: auto; border: 1px solid #ccc; border-radius: 5px;">
-</div>
-        <div class="form-group">
             <label for="prezzo-menu">Prezzo (€)</label>
             <input type="number" id="prezzo-menu" step="0.01" name="prezzo" class="form-control" required>
         </div>
@@ -578,11 +536,6 @@ img {
             <label for="nome-prodotto">Nome Prodotto</label>
             <input type="text" id="nome-prodotto" name="nome" class="form-control" required>
         </div>
-        <div class="form-group">
-    <label for="immagine-prodotto">Immagine</label>
-    <input type="file" id="immagine-prodotto" name="immagine" class="form-control" accept="image/*" onchange="previewImage(event, 'prodotto-preview')">
-    <img id="prodotto-preview" src="#" alt="Anteprima immagine" style="display: none; margin-top: 10px; max-width: 100%; height: auto; border: 1px solid #ccc; border-radius: 5px;">
-</div>
         <div class="form-group">
             <label for="prezzo-prodotto">Prezzo (€)</label>
             <input type="number" id="prezzo-prodotto" step="0.01" name="prezzo" class="form-control" required>
@@ -937,25 +890,6 @@ window.onclick = function(event) {
     const confirmOverlay = document.getElementById('confirm-overlay');
     if (event.target === overlay || event.target === confirmOverlay) {
         closeAllPopups();
-    }
-}
-
-function previewImage(event, previewId) {
-    const input = event.target;
-    const preview = document.getElementById(previewId);
-
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-
-        reader.onload = function(e) {
-            preview.src = e.target.result;
-            preview.style.display = 'block'; // Mostra l'immagine
-        };
-
-        reader.readAsDataURL(input.files[0]); // Legge il file come URL
-    } else {
-        preview.src = '#';
-        preview.style.display = 'none'; // Nasconde l'immagine se non c'è un file
     }
 }
 </script>
