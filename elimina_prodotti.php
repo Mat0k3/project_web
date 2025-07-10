@@ -64,8 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                         $stmt = $pdo->prepare("DELETE FROM prodotti_ordinazione WHERE ID_Prodotto = ?");
                         $stmt->execute([$prodotto_id]);
                         
-                        $stmt = $pdo->prepare("DELETE FROM recensione WHERE ID_Prodotto = ?");
-                        $stmt->execute([$prodotto_id]);
                         
                         // Elimina il prodotto
                         $stmt = $pdo->prepare("DELETE FROM prodotto WHERE ID_Prodotto = ?");
@@ -140,8 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                     $stmt = $pdo->prepare("DELETE FROM prodotti_ordinazione WHERE ID_Prodotto = ?");
                     $stmt->execute([$id]);
                     
-                    $stmt = $pdo->prepare("DELETE FROM recensione WHERE ID_Prodotto = ?");
-                    $stmt->execute([$id]);
+                
                     
                     // Elimina il prodotto
                     $stmt = $pdo->prepare("DELETE FROM prodotto WHERE ID_Prodotto = ?");
@@ -478,7 +475,7 @@ if (isset($_GET['get_data'])) {
             Elimina Menu
         </button>
         <button class="admin-btn" onclick="openPopup('prodotti')">
-            <i class="fas fa-minus-circle"></i>
+            <i class="fas fa-plus-circle"></i>
             Elimina Prodotti
         </button>
     </div>
