@@ -176,7 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
   <meta name="author" content="" />
   <link rel="shortcut icon" href="images/favicon.png" type="">
 
-  <title> Feane </title>
+  <title> Pane & Pixel  </title>
 
   <!-- bootstrap core css -->
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
@@ -747,7 +747,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
         <nav class="navbar navbar-expand-lg custom_nav-container ">
           <a class="navbar-brand" href="index.php">
             <span>
-              Feane
+              Pane & Pixel 
             </span>
           </a>
 
@@ -764,10 +764,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
                 <a class="nav-link" href="menu.php">Menu</a>
               </li>
               <li class="nav-item <?php echo ($current_page == 'about.php') ? 'active' : ''; ?>">
-                <a class="nav-link" href="about.php">About</a>
+                <a class="nav-link" href="about.php">Chi siamo</a>
               </li>
               <li class="nav-item <?php echo ($current_page == 'book.php') ? 'active' : ''; ?> <?php echo $classeDisabilitata; ?>">
-                <a class="nav-link" href="book.php">Book Table</a>
+                <a class="nav-link" href="book.php">prenota</a>
               </li>
             </ul>
             <div class="user_option">
@@ -863,7 +863,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
     <div class="row justify-content-center">
       <div class="col-md-10 col-lg-8">
         <h1 class="display-4 fw-bold" style="font-family: 'Dancing Script', cursive;">
-          Benvenuto da <span style="color: #ffbe33;">Feane</span>
+          Benvenuto da <span style="color: #ffbe33;">Pane & Pixel </span>
         </h1>
         <p class="lead mt-3 mb-4">
           Dove la passione per la cucina italiana incontra la qualità e la tradizione.
@@ -921,15 +921,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
           <div class="detail-box">
             <div class="heading_container">
               <h2>
-                We Are Feane
+                We Are Pane & Pixel 
               </h2>
             </div>
             <p>
-              There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration
-              in some form, by injected humour, or randomised words which don't look even slightly believable. If you
-              are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in
-              the middle of text. All
+            Tutto è iniziato sui banchi dell'Università dell'Aquila, dove tre ragazzi di informatica - Angelo, Andrea e Matteo - si sono conosciuti condividendo molto più delle lezioni di programmazione. Tra un esame e l'altro, la nostra vera passione è emersa sempre più forte: la cucina.
             </p>
+            <a href="about.php">
+              Leggi di più
+            </a>
           </div>
         </div>
       </div>
@@ -945,7 +945,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
   <section class="client_section layout_padding-bottom food">
   <div class="container">
     <div class="heading_container heading_center psudo_white_primary mb_45">
-      <h2>What Says Our Customers</h2>
+      <h2>Cosa dicono i clienti</h2>
     </div>
 
     <div class="carousel-wrap row">

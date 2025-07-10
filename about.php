@@ -14,7 +14,7 @@
   <meta name="author" content="" />
   <link rel="shortcut icon" href="images/favicon.png" type="">
 
-  <title> Feane </title>
+  <title> Pane & Pixel  </title>
 
   <!-- bootstrap core css -->
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
@@ -41,7 +41,7 @@
 
   <!-- about section -->
 
-  <section class="about_section layout_padding">
+  <section class="about_section layout_padding spazio">
     <div class="container  ">
 
       <div class="row">
@@ -54,18 +54,16 @@
           <div class="detail-box">
             <div class="heading_container">
               <h2>
-                We Are Feane
+                We Are Pane & Pixel
               </h2>
             </div>
             <p>
-              There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration
-              in some form, by injected humour, or randomised words which don't look even slightly believable. If you
-              are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in
-              the middle of text. All
+            Tutto è iniziato sui banchi dell'Università dell'Aquila, dove tre ragazzi di informatica - Angelo, Andrea e Matteo - si sono conosciuti condividendo molto più delle lezioni di programmazione. Tra un esame e l'altro, la nostra vera passione è emersa sempre più forte: la cucina.</br>
+Quello che inizialmente erano esperimenti culinari nel nostro appartamento da studenti, è diventato presto qualcosa di più grande. Amici e compagni di corso iniziavano a chiedere sempre più spesso di assaggiare le nostre creazioni, e ci siamo resi conto che il nostro cuore batteva più forte davanti a una pizza perfetta che davanti a una riga di codice.</br>
+Così abbiamo preso la decisione più coraggiosa delle nostre vite: abbandonare gli studi per seguire il nostro sogno. Abbiamo trasformato la nostra passione in Pane & Pixel, dove la tradizione italiana incontra la creatività digitale di tre ragazzi che credono nel cibo buono e genuino.</br>
+Il nostro ristorante nasce dal desiderio di creare un punto di ritrovo per gli studenti dell'Aquila, dove ogni panino e ogni pizza sono preparati con l'amore e la dedizione di chi ha scelto di seguire il proprio sogno. Perché a volte, la ricetta perfetta nasce quando si uniscono ingredienti genuini e passione autentica.</br></br>
+Benvenuti nella nostra avventura culinaria!
             </p>
-            <a href="">
-              Read More
-            </a>
           </div>
         </div>
       </div>
@@ -75,85 +73,7 @@
   <!-- end about section -->
 
   <!-- footer section -->
-  <footer class="footer_section">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4 footer-col">
-          <div class="footer_contact">
-            <h4>
-              Contact Us
-            </h4>
-            <div class="contact_link_box">
-              <a href="">
-                <i class="fa fa-map-marker" aria-hidden="true"></i>
-                <span>
-                  Location
-                </span>
-              </a>
-              <a href="">
-                <i class="fa fa-phone" aria-hidden="true"></i>
-                <span>
-                  Call +01 1234567890
-                </span>
-              </a>
-              <a href="">
-                <i class="fa fa-envelope" aria-hidden="true"></i>
-                <span>
-                  demo@gmail.com
-                </span>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 footer-col">
-          <div class="footer_detail">
-            <a href="" class="footer-logo">
-              Feane
-            </a>
-            <p>
-              Necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with
-            </p>
-            <div class="footer_social">
-              <a href="">
-                <i class="fa fa-facebook" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-twitter" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-linkedin" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-instagram" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-pinterest" aria-hidden="true"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 footer-col">
-          <h4>
-            Opening Hours
-          </h4>
-          <p>
-            Everyday
-          </p>
-          <p>
-            10.00 Am -10.00 Pm
-          </p>
-        </div>
-      </div>
-      <div class="footer-info">
-        <p>
-          &copy; <span id="displayYear"></span> All Rights Reserved By
-          <a href="https://html.design/">Free Html Templates</a><br><br>
-          &copy; <span id="displayYear"></span> Distributed By
-          <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
-        </p>
-      </div>
-    </div>
-  </footer>
+  <?php include 'footer.php'; ?>
   <!-- footer section -->
 
   <!-- jQery -->

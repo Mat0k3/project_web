@@ -62,7 +62,7 @@ if ($carrello) {
   <meta name="author" content="" />
   <link rel="shortcut icon" href="images/favicon.png" type="">
 
-  <title> Feane </title>
+  <title> Pane & Pixel  </title>
 
   <!-- bootstrap core css -->
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
@@ -109,7 +109,7 @@ if ($carrello) {
         <nav class="navbar navbar-expand-lg custom_nav-container ">
           <a class="navbar-brand" href="index.php">
             <span>
-              Feane
+              Pane & Pixel 
             </span>
           </a>
 
@@ -126,10 +126,10 @@ if ($carrello) {
                 <a class="nav-link" href="menu.php">Menu</a>
               </li>
               <li class="nav-item <?php echo ($current_page == 'about.php') ? 'active' : ''; ?>">
-                <a class="nav-link" href="about.php">About</a>
+                <a class="nav-link" href="about.php">Chi siamo</a>
               </li>
               <li class="nav-item <?php echo ($current_page == 'book.php') ? 'active' : ''; ?> <?php echo $classeDisabilitata; ?>">
-                <a class="nav-link" href="book.php">Book Table</a>
+                <a class="nav-link" href="book.php">prenota</a>
               </li>
             </ul>
             <div class="user_option">

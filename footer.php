@@ -5,25 +5,25 @@
         <div class="col-md-4 footer-col">
           <div class="footer_contact">
             <h4>
-              Contact Us
+              Contatti
             </h4>
             <div class="contact_link_box">
-              <a href="">
+              <a>
                 <i class="fa fa-map-marker" aria-hidden="true"></i>
                 <span>
-                  Location
+                    Via Vetoio 
                 </span>
               </a>
-              <a href="">
+              <a>
                 <i class="fa fa-phone" aria-hidden="true"></i>
                 <span>
-                  Call +01 1234567890
+                  Call +39 1234567890
                 </span>
               </a>
-              <a href="">
+              <a>
                 <i class="fa fa-envelope" aria-hidden="true"></i>
                 <span>
-                  demo@gmail.com
+                  pane.pixel@univaq.it
                 </span>
               </a>
             </div>
@@ -32,48 +32,32 @@
         <div class="col-md-4 footer-col">
           <div class="footer_detail">
             <a href="" class="footer-logo">
-              Feane
+              Pane & Pixel 
             </a>
             <p>
-              Necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with
-            </p>
-            <div class="footer_social">
-              <a href="">
-                <i class="fab fa-facebook-f" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fab fa-twitter" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fab fa-linkedin-in" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fab fa-instagram" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fab fa-pinterest-p" aria-hidden="true"></i>
-              </a>
-            </div>
+           Per eventuali informazioni o problematiche non esitate a contattarci utilizzando i nostri contatti nelle apposite fasce orarie. 
+          </p>
+            
           </div>
         </div>
         <div class="col-md-4 footer-col">
           <h4>
-            Opening Hours
+            Orari di apertura
           </h4>
           <p>
-            Everyday
+            Ogni giorno
           </p>
           <p>
-            10.00 Am -10.00 Pm
+            19.00 - 23.00
           </p>
         </div>
       </div>
       <div class="footer-info">
         <p>
           &copy; <span id="displayYear"></span> All Rights Reserved By
-          <a href="https://html.design/">Free Html Templates</a><br><br>
+          <a>Pane & Pixel</a><br><br>
           &copy; <span id="displayYear"></span> Distributed By
-          <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
+          <a target="_blank">AMA</a>
         </p>
       </div>
     </div>
@@ -97,7 +81,6 @@
   <!-- custom js -->
   <script src="js/custom.js"></script>
   <!-- Google Map -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
   </script>
   <!-- End Google Map -->
 

@@ -717,6 +717,16 @@ if (!isset($_SESSION['utente_id'])) {
   </section>
   
   <script>
+    function aggiornaContatore(qty) {
+  const counter = document.getElementById('counter');
+  if (qty > 0) {
+    counter.textContent = qty;
+    counter.style.display = 'flex';
+  } else {
+    counter.textContent = '';
+    counter.style.display = 'none';
+  }
+}
 
 document.getElementById('checkout-btn')?.addEventListener('click', () => {
     // Raccogli i dati dell'ordine prima di inviarlo
@@ -878,7 +888,9 @@ document.querySelectorAll('input[type=number]').forEach(input => {
         if (data.success) {
             const prezzoBase = parseFloat(tr.querySelector('.prezzo').textContent.replace(/[^\d.]/g, '')) / e.target.defaultValue;
             tr.querySelector('.prezzo').textContent = '€ ' + (prezzoBase * qty).toFixed(2);
+            const counter = document.getElementById('counter');
             document.getElementById('totale').textContent = data.totale;
+            aggiornaContatore(data.quantita_totale);
             e.target.defaultValue = qty;
         }
       });
