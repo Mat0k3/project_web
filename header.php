@@ -4,6 +4,14 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
 require_once 'includes/dbh.inc.php';
 
+<<<<<<< Updated upstream
+=======
+if (isset($_SESSION['gruppo']) && $_SESSION['gruppo'] === 'admin') {
+  $classeDisabilitata = 'disabilitato';
+}else{
+  $classeDisabilitata = '';
+}
+>>>>>>> Stashed changes
 
 // Controlla se l'utente è loggato (assumendo che usi le sessioni)
 $user_logged_in = isset($_SESSION['utente_id']);
@@ -80,7 +88,19 @@ if ($carrello) {
   <link rel="stylesheet" href="css/register_login.css">
 
   <link rel="stylesheet" href="css/utente.css">
-
+  <style>
+    .disabilitato{
+      pointer-events: none;   /* Disabilita il click */
+      opacity: 0;             /* Rende il bottone invisibile */
+      visibility: hidden;     /* Lo nasconde dallo schermo */
+      height: 0;
+      width: 0;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      border: none;
+    }
+  </style>
 </head>
 <body>
 
@@ -111,12 +131,12 @@ if ($carrello) {
               <li class="nav-item <?php echo ($current_page == 'about.php') ? 'active' : ''; ?>">
                 <a class="nav-link" href="about.php">About</a>
               </li>
-              <li class="nav-item <?php echo ($current_page == 'book.php') ? 'active' : ''; ?>">
+              <li class="nav-item <?php echo ($current_page == 'book.php') ? 'active' : ''; ?> <?php echo $classeDisabilitata; ?>">
                 <a class="nav-link" href="book.php">Book Table</a>
               </li>
             </ul>
             <div class="user_option">
-              <a class="cart_link <?php echo ($current_page == 'cart.php') ? 'active' : ''; ?>" href="cart.php">
+              <a class="cart_link <?php echo ($current_page == 'cart.php') ? 'active' : ''; ?> <?php echo $classeDisabilitata; ?>" href="cart.php">
                 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
                   <g>
                     <g>

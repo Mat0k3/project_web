@@ -17,11 +17,9 @@ if (isset($_SESSION['utente_id'])) {
 
   // Reindirizzamento in base al gruppo
   if ($gruppo === 'utenti') {
-    $_SESSION['gruppo'] = 'utenti';
     header("Location: utente.php");
     exit;
   } elseif ($gruppo === 'admin' || $gruppo === 'cucina') {
-    $_SESSION['gruppo'] = 'admin';
     header("Location: dashboard_dinamica.php");
     exit;
   }
@@ -75,6 +73,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   'email' => $_POST['email'],
                   'password' => $_POST['password']
               ];
+
+
+              $sql = "SELECT g.Nome 
+                      FROM gruppo g
+                      INNER JOIN utente_gruppo ug ON g.ID_Gruppo = ug.ID_Gruppo
+                      WHERE ug.ID_Utente = :id";
+
+              $stmt = $pdo->prepare($sql);
+              $stmt->bindParam(':id', $id_utente, PDO::PARAM_INT);
+              $stmt->execute();
+
+              $gruppo = $stmt->fetch(PDO::FETCH_ASSOC);
+
+              // Salva in sessione il nome del gruppo
+              if ($gruppo) {
+                $_SESSION['gruppo'] = $gruppo['Nome']; // es. 'admin'
+              }
+
               $_SESSION['utente_id'] = $id_utente;
               $_SESSION['utente_nome'] = $nome;
               header("Location: utente.php?");
