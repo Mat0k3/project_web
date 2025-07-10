@@ -724,7 +724,7 @@ function showFeedback(type, title, message, showButton = true) {
             </div>
             <h3>${title}</h3>
             <p>${message}</p>
-            ${showButton ? '<button class="btn" onclick="closeAllPopups()">Perfetto!</button>' : ''}
+            ${showButton ? '<button class="btn" onclick="closeAllPopups();location.reload();">Perfetto!</button>' : ''}
         `;
     } else if (type === 'error') {
         content = `
