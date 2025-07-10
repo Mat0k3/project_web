@@ -58,6 +58,10 @@ h2 {
 .heading_container h2 span {
   color: #ffbe33;
 }
+.about_section .heading_container h2 {
+  color: #ffbe33 !important;
+}
+
 
 .heading_container p {
   margin-top: 10px;
@@ -1483,7 +1487,8 @@ a:focus {
 }
 
 .intro_section .btn:hover {
-  background-color: #e69c00;
+
+  background-color: #e5ab2d;
   transform: scale(1.05);
 }
 
