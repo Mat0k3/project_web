@@ -58,13 +58,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
     $trovato = false;
     foreach ($lista_ordini as $ordine) {
         if ($ordine['Stato'] !== 'Consegnato') {
-            $trovato = true;
-            echo '<div class="list-group-item">';
-            echo "<strong>ID:</strong> {$ordine['ID_Ordinazione']} | ";
-            echo "<strong>Data:</strong> {$ordine['Data']} | ";
-            echo "<strong>Stato:</strong> {$ordine['Stato']} | ";
-            echo "<strong>Costo:</strong> €" . number_format($ordine['Costo'], 2, ',', '.');
-            echo '</div>';
+            $trovato = true; ?>
+            <div class="list-group-item">
+            <strong>ID:</strong> <?php echo $ordine['ID_Ordinazione']; ?> | 
+            <strong>Data:</strong> <?php echo $ordine['Data']; ?> |
+            <strong>Stato:</strong>  <?php echo $ordine['Stato']=='In consegna'?'Pronto':'In preparazione' ?> |
+            <strong>Costo:</strong> € <?php echo number_format($ordine['Costo'], 2, ',', '.') ?>
+            </div>
+        <?php
         }
     }
     if (!$trovato) echo '<div class="list-group-item text-muted">Nessun ordine in sospeso.</div>';
@@ -72,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
   </div>
 
 
-  <h4>Ordini consegnati</h4>
+  <h4>Ordini ritirati</h4>
   <div class="list-group">
     <?php
     $trovato = false;

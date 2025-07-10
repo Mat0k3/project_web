@@ -32,7 +32,7 @@ $ordini = $stmt->fetchAll();
             <div class="mb-2">
                 <strong>ID:</strong> <?= $ordine['ID_Ordinazione'] ?> |
                 <strong>Data:</strong> <?= $ordine['Data'] ?> |
-                <strong>Stato:</strong> <?= $ordine['Stato'] ?> |
+                <strong>Stato:</strong> <?= $ordine['Stato']=='In consegna'?'Pronto':'In preparazione' ?> |
                 <strong>Costo:</strong> €<?= number_format($ordine['Costo'], 2, ',', '.') ?>
             </div>
 
@@ -42,12 +42,12 @@ $ordini = $stmt->fetchAll();
                 <input type="hidden" name="id" value="<?= $ordine['ID_Ordinazione'] ?>">
                 <?php if ($ordine['Stato'] === 'In preparazione'): ?>
                     <button name="stato" value="In consegna" class="btn btn-outline-dark btn-sm">
-                    In consegna
+                    Pronto
                     </button>
                 <?php endif; ?>
                 <?php if (in_array($ordine['Stato'], ['In preparazione', 'In consegna'])): ?>
                     <button name="stato" value="Consegnato" class="btn btn-outline-success btn-sm">
-                    Consegnato
+                    Ritirato
                     </button>
                 <?php endif; ?>
                 </form>
@@ -64,7 +64,7 @@ $ordini = $stmt->fetchAll();
   </div>
 
   <!-- ORDINI CONSEGNATI -->
-  <h4 class="mb-3" style="color: #ffbe33;">Ordini Consegnati</h4>
+  <h4 class="mb-3" style="color: #ffbe33;">Ordini Ritirati</h4>
   <div class="row g-4 mb-5">
     <?php
     $consegnati = 0;
