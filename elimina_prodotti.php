@@ -478,7 +478,7 @@ if (isset($_GET['get_data'])) {
             Elimina Menu
         </button>
         <button class="admin-btn" onclick="openPopup('prodotti')">
-            <i class="fas fa-plus-circle"></i>
+            <i class="fas fa-minus-circle"></i>
             Elimina Prodotti
         </button>
     </div>
