@@ -68,9 +68,6 @@ if (!isset($_SESSION['utente_id'])) {
                 <input type="text" name="nome" class="form-control" placeholder="Your Name" required />
               </div>
               <div>
-                <input type="email" name="email" class="form-control" placeholder="Your Email" required />
-              </div>
-              <div>
                 <select name="persone" class="form-control nice-select wide" required>
                   <option value="" disabled selected>
                     How many persons?
@@ -117,7 +114,9 @@ if (!isset($_SESSION['utente_id'])) {
         </div>
         <div class="col-md-6">
           <div class="map_container ">
-            <div id="googleMap"></div>
+            <div id="googleMap">
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11793.560713535804!2d13.380958787158205!3d42.35552330000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x132fd2f32395d82b%3A0x40ed6780ff6559a2!2sUniversit%C3%A0%20degli%20Studi%20dell&#39;Aquila%20-%20Dipartimento%20di%20Scienze%20Umane!5e0!3m2!1sit!2sit!4v1752134254246!5m2!1sit!2sit" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
           </div>
         </div>
       </div>
@@ -223,8 +222,8 @@ if (!isset($_SESSION['utente_id'])) {
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
   <!-- custom js -->
   <script src="js/custom.js"></script>
-  <!-- Google Map -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
+  <!-- Google Map  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap"> -->
+  
   </script>
   <!-- End Google Map -->
 

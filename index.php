@@ -173,7 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
 <style>
   
 
-  .carousel-wrap {
+.carousel-wrap {
   position: relative;
   margin-bottom: 100px; /* spazio sotto per evitare sovrapposizione footer */
 }
@@ -251,7 +251,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
     flex-direction: column;
     justify-content: space-between;
     background-color: transparent;
-    color: #ffffff;
+    color: white;
     height: 255px;
   }
   
@@ -259,6 +259,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 10px;
+    color: #ffbe33;
   }
   
   .preview-menu .detail-box p {
@@ -372,7 +373,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
   
   @keyframes cartBounce {
     0% { transform: scale(1.2); }
-    50% { transform: scale(1.4) rotate(10deg); }
+    50% { transform: scale(1.4) rotate(6deg); }
     100% { transform: scale(1.2) rotate(0deg); }
   }
   
@@ -545,6 +546,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
       width: 100%;
     }
 
+    
+  }
+
+  h4{
+    color: #ffbe33;
   }
 
   </style>
@@ -974,5 +980,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
   </script>
 
   <?php include 'footer.php'; ?>
-</body>
-</html>
