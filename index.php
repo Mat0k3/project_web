@@ -917,14 +917,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
           const tipo = btn.dataset.tipo;
 
           const counter = document.getElementById('counter');
-          if (counter.classList.contains('invisible')) {
-        counter.classList.remove('invisible')
-        
-        counter.textContent =  1;
-      } else {
-        let current = parseInt(counter.textContent) || 0;
-        counter.textContent = current +1;
-      }
+          
 
 
           fetch('aggiungi_al_carrello.php', {
@@ -937,6 +930,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
             btn.classList.remove('loading');
             
             if (msg.trim() === 'success') {
+              if (counter.classList.contains('invisible')) {
+                counter.classList.remove('invisible')
+                
+                counter.textContent =  1;
+              } else {
+                let current = parseInt(counter.textContent) || 0;
+                counter.textContent = current +1;
+              }
               showPopup(cartPopup);
             } else {
               document.querySelector('.error-message').textContent = msg;
