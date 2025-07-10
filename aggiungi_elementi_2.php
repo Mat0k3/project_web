@@ -602,7 +602,7 @@ img {
         </div>
         
         <div class="select-section">
-            <h5><i class="fas fa-leaf"></i> Ingredienti</h5>
+            <h5 style="margin-top: 90px;"><i class="fas fa-leaf"></i> Ingredienti</h5>
             <div id="ingredienti-wrapper">
                 <div class="select-item">
                     <select name="ingredienti[]" class="form-control">

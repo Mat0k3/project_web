@@ -93,52 +93,52 @@ function mostraPreviewProdotti(PDO $pdo): void {
     }
 
     foreach ($prodotti as $row) {
-        $img = 'img/default.jpg';
-        $categoria = 'altro';
-        
-        switch ((int)$row['ID_Prodotto']) {
-            case 1: $img = 'images/f1.png'; break;
-            case 2: $img = 'img/panino.jpg'; break;
-            case 3: $img = 'img/bevanda.jpg'; break;
-            case 4: $img = 'img/fritti.jpg'; break;
-        }
-
-        switch ((int)$row['ID_Categoria']) {
-            case 1: $categoria = 'pizza'; break;
-            case 2: $categoria = 'panini'; break;
-            case 3: $categoria = 'bevande'; break;
-            case 4: $categoria = 'fritti'; break;
-        }
-
-        $ingredienti = getIngredienti($pdo, $row['ID_Prodotto']);
-        $allergeni = getAllergeni($pdo, $row['ID_Prodotto']);
-
-        echo '<div class="col-sm-6 col-lg-4 all ' . $categoria . '">';
-        echo '  <div class="box">';
-        echo '    <div>';
-        echo '      <div class="img-box">';
-        echo '        <img src="' . $img . '" alt="">';
-        echo '      </div>';
-        echo '      <div class="detail-box">';
-        echo '        <div class="content-wrapper">';
-        echo '          <h5>' . htmlspecialchars($row['Nome']) . '</h5>';
-        echo '          <p>' . htmlspecialchars($row['Descrizione'] ?? 'Nessuna descrizione') . '</p>';
-        if (!empty($ingredienti)) echo '<p><strong>Ingredienti:</strong> ' . $ingredienti . '</p>';
-        if (!empty($allergeni)) echo '<p><strong>Allergeni:</strong> ' . $allergeni . '</p>';
-        echo '        </div>';
-        echo '        <div class="options">';
-        echo '          <h6>€' . number_format($row['Prezzo'], 2) . '</h6>';
-        if ($canAddToCart) {
+      // Usa l'immagine dal database o una predefinita
+      $img = !empty($row['Immagine']) ? 'uploads/prodotti/' . htmlspecialchars($row['Immagine']) : 'img/default.jpg';
+  
+      // Determina la categoria del prodotto
+      $categoria = 'altro';
+      switch ((int)$row['ID_Categoria']) {
+          case 1: $categoria = 'pizza'; break;
+          case 2: $categoria = 'panini'; break;
+          case 3: $categoria = 'bevande'; break;
+          case 4: $categoria = 'fritti'; break;
+      }
+  
+      // Recupera ingredienti e allergeni
+      $ingredienti = getIngredienti($pdo, $row['ID_Prodotto']);
+      $allergeni = getAllergeni($pdo, $row['ID_Prodotto']);
+  
+      // Genera l'HTML per il prodotto
+      echo '<div class="col-sm-6 col-lg-4 all ' . $categoria . '">';
+      echo '  <div class="box">';
+      echo '    <div>';
+      echo '      <div class="img-box">';
+      echo '        <img src="' . $img . '" alt="Immagine prodotto">';
+      echo '      </div>';
+      echo '      <div class="detail-box">';
+      echo '        <div class="content-wrapper">';
+      echo '          <h5>' . htmlspecialchars($row['Nome']) . '</h5>';
+      echo '          <p>' . htmlspecialchars($row['Descrizione'] ?? 'Nessuna descrizione') . '</p>';
+      if (!empty($ingredienti)) echo '<p><strong>Ingredienti:</strong> ' . $ingredienti . '</p>';
+      if (!empty($allergeni)) echo '<p><strong>Allergeni:</strong> ' . $allergeni . '</p>';
+      echo '        </div>';
+      echo '        <div class="options">';
+      echo '          <h6>€' . number_format($row['Prezzo'], 2) . '</h6>';
+      
+      if ($canAddToCart) {
           echo '          <a href="#" class="add-to-cart" data-id="' . $row['ID_Prodotto'] . '" data-tipo="prodotto"><i class="fa fa-shopping-cart"></i></a>';
       } else {
           echo '          <span class="add-to-cart disabled" title="Accesso limitato"><i class="fa fa-lock"></i></span>';
-      }echo '        </div>';
-        echo '      </div>';
-        echo '    </div>';
-        echo '  </div>';
-        echo '</div>';
-    }
-}
+      }
+      
+      echo '        </div>';
+      echo '      </div>';
+      echo '    </div>';
+      echo '  </div>';
+      echo '</div>';
+  }
+  }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto']) && isset($_SESSION['utente_id'])) {
     $utenteId = $_SESSION['utente_id'];
