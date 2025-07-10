@@ -3,6 +3,7 @@
 $current_page = basename($_SERVER['PHP_SELF']);
 
 require_once 'includes/dbh.inc.php';
+
 if (isset($_SESSION['gruppo']) && $_SESSION['gruppo'] === 'admin') {
   $classeDisabilitata = 'disabilitato';
 }else{

@@ -111,8 +111,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
                 <form action="includes/delete_handler.inc.php" method="post" class="d-inline float-end ms-2">
                     <input type="hidden" name="tipo" value="prenotazione">
                     <input type="hidden" name="id" value="' . $p['ID_Prenotazione'] . '">
-                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Annulla ordine" onclick="return confirm(\'Confermi la cancellazione dell\\\'ordine?\')">
-                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    <button type="button" class="btn btn-sm btn-outline-danger delete-btn" title="Annulla prenotazione">
+                      <i class="fa fa-trash" aria-hidden="true"></i>
                     </button>
                 </form>
             ';
@@ -151,6 +151,72 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
       </form>
     </div>
   </section>
+
+  <!-- Modal per conferma eliminazione -->
+<div id="deleteModal" class="custom-modal">
+    <div class="modal-content-custom">
+        <div class="icon-circle">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <div class="modal-title-custom">Conferma eliminazione</div>
+        <div class="modal-text-custom">
+            Sei sicuro di voler annullare questa prenotazione?<br>
+            <strong>Questa azione non può essere annullata.</strong>
+        </div>
+        <div>
+    <button type="button" class="btn btn-custom-confirm" id="confirmDelete">
+        Elimina
+    </button>
+    <button type="button" class="btn btn-custom-cancel" id="cancelDelete">
+        Annulla
+    </button>
+</div>
+    </div>
+</div>
+
+<script>
+const modal = document.getElementById('deleteModal');
+const confirmBtn = document.getElementById('confirmDelete');
+const cancelBtn = document.getElementById('cancelDelete');
+let currentForm = null;
+
+document.querySelectorAll('.delete-btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        currentForm = this.closest('form');
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    });
+});
+
+confirmBtn.addEventListener('click', function() {
+    if (currentForm) {
+        currentForm.submit();
+    }
+});
+
+cancelBtn.addEventListener('click', function() {
+    modal.classList.remove('show');
+    document.body.style.overflow = '';
+    currentForm = null;
+});
+
+modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+        currentForm = null;
+    }
+});
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && modal.classList.contains('show')) {
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+        currentForm = null;
+    }
+});
+</script>
   
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <?php include 'footer.php'; ?>
