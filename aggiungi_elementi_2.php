@@ -434,6 +434,11 @@ img {
     margin-bottom: 20px;
     animation: pulse-icon 2s infinite;
 }
+
+/* Stile per la sezione di selezione */
+.select-section {
+    margin-top: 20px; /* (Opzionale) Rende il testo più evidente */
+}
 </style>
 <div class="admin-container">
     <div class="admin-header spazio">
@@ -613,7 +618,7 @@ img {
             </div>
         </div>
 
-        <div class="select-section">
+        <div class="select-section2">
             <h5><i class="fas fa-exclamation-triangle"></i> Allergeni</h5>
             <div id="allergeni-wrapper">
                 <div class="select-item">
