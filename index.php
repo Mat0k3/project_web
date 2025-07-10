@@ -232,6 +232,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
   max-width: 600px;
   width: 90%;
   height: 400px;
+  
   overflow: hidden;
   position: relative;
   display: flex;
@@ -241,10 +242,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
 
 /* Inner review style */
 .modal-box .box {
-  background: #fff;
+  background: #222831;
   width: 100%;
   height: 100%;
   border-radius: 12px;
+  border: 2px solid #ffbe33;
   box-shadow: 0 0 20px rgba(255, 165, 0, 0.2);
   padding: 40px;
   overflow-y: auto;
@@ -258,7 +260,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
 .modal-box .detail-box p {
   font-size: 16px;
   line-height: 1.6;
-  color: #333;
+  color: white;
 }
 
 /* Close button */
@@ -267,7 +269,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
   top: 0px;
   right: 20px; /* Cambiato da 'right' a 'left' */
   font-size: 28px;
-  color: #444;
+  color: #555;
   cursor: pointer;
   z-index: 10;
 }
@@ -300,6 +302,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
 .client_owl-carousel .item .box .detail-box{
   padding-top: 0px;
   margin-top: 15px;
+
 }
 
 .client_owl-carousel .box {
@@ -312,6 +315,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
+
+}
+.box_mia{
+  border: 3px solid #ffbe33;
 }
 
 .client_owl-carousel .recensione-testo {
@@ -837,14 +844,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
               <?php if ($user_logged_in): ?>
                 <div class="user_profile">
                   <a href="login.php" class="user_link <?php echo ($current_page == 'utente.php'||$current_page == 'dashboard_dinamica.php'||$current_page == 'login.php') ? 'active' : ''; ?>">
-                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <i class="fas fa-user" aria-hidden="true"></i>
                     <span class="user_name"><?php echo htmlspecialchars($user_name); ?></span>
                   </a>
                 </div>
               <?php else: ?>
                 <div class="user_auth">
                   <a href="login.php" class="user_link <?php echo ($current_page == 'login.php' || $current_page == 'register.php') ? 'active' : ''; ?>">
-                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <i class="fas fa-user" aria-hidden="true"></i>
                     <span class="auth_text">Accedi</span>
                   </a>
                 </div>
@@ -968,7 +975,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
           $mostra_espandi = strlen($testo_completo) > 150;
           
           echo '<div class="item">
-                  <div class="box">
+                  <div class="box box_mia">
                     <div class="detail-box">';
                     echo '<h6>' . htmlspecialchars($rec['Nome']) . '</h6>';
                     echo '<div class="stelle">';

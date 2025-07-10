@@ -153,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
   </section>
 
   <!-- Modal per conferma eliminazione -->
-  <div id="deleteModal" class="custom-modal">
+<div id="deleteModal" class="custom-modal">
     <div class="modal-content-custom">
         <div class="icon-circle">
             <i class="fas fa-exclamation-triangle"></i>
