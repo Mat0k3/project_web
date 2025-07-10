@@ -108,7 +108,6 @@ if (!isset($_SESSION['utente_id'])) {
       'totale' => number_format($tot, 2),
       'quantita_totale' => $quantitaTotale
     ]);
-    
     exit;
 
   }
@@ -208,6 +207,8 @@ if (!isset($_SESSION['utente_id'])) {
     border: 2px solid #f39c12;
     border-radius: 8px;
     padding: 8px;
+    margin: 0 auto; /* Centra l'input orizzontalmente */
+    display: block; /* Necessario per il centramento */
   }
   
   .qty-input:focus {
@@ -642,7 +643,7 @@ if (!isset($_SESSION['utente_id'])) {
                         <div class="item-name"><?= htmlspecialchars($m['Nome']) ?></div>
                     </td>
                     <td class="text-center">
-                      <input type="number" min="1" class="form-control qty-input" value="<?= $m['Quantità'] ?>">
+                      <input type="number" min="0" class="form-control qty-input" value="<?= $m['Quantità'] ?>">
                     </td>
                     <td class="price-cell prezzo">€ <?= number_format($m['Prezzo'] * $m['Quantità'], 2) ?></td>
                     <td class="text-center">
@@ -857,6 +858,49 @@ document.addEventListener('keydown', function(e) {
         hideOrderConfirmationPopup();
     }
 });
+
+document.querySelectorAll('input[type=number]').forEach(input => {
+    input.addEventListener('change', e => {
+      const tr = e.target.closest('tr');
+      const id = tr.dataset.id;
+      const tipo = tr.dataset.type;
+      let qty = e.target.value;
+      if (qty < 1) {
+        e.target.value = 1;
+        qty = 1; // Forza la quantità a 1 se è negativa o non valida
+      }
+  
+      fetch('', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ action: 'update', tipo: tipo, id: id, quantita: qty })
+      }).then(r => r.json()).then(data => {
+        if (data.success) {
+            const prezzoBase = parseFloat(tr.querySelector('.prezzo').textContent.replace(/[^\d.]/g, '')) / e.target.defaultValue;
+            tr.querySelector('.prezzo').textContent = '€ ' + (prezzoBase * qty).toFixed(2);
+            document.getElementById('totale').textContent = data.totale;
+            e.target.defaultValue = qty;
+        }
+      });
+    });
+  });
+  
+  document.querySelectorAll('.rimuovi').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const tr = e.target.closest('tr');
+      const id = tr.dataset.id;
+      const tipo = tr.dataset.type;
+      fetch('', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ action: 'delete', tipo: tipo, id: id })
+      }).then(r => r.json()).then(data => {
+        if (data.success) {
+          location.reload();
+        }
+      });
+    });
+  });
   </script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <?php include 'footer.php'; ?>
