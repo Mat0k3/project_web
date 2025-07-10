@@ -1,6 +1,16 @@
 <?php
 session_start();
 require_once 'includes/dbh_test.inc.php';
+function checkUserGroup(PDO $pdo, int $userId): bool {
+  $stmt = $pdo->prepare("
+      SELECT ug.ID_Utente 
+      FROM utente_gruppo ug 
+      JOIN gruppo g ON ug.ID_Gruppo = g.ID_Gruppo 
+      WHERE ug.ID_Utente = ? AND g.Nome = 'utenti'
+  ");
+  $stmt->execute([$userId]);
+  return (bool)$stmt->fetchColumn();
+}
 
 $current_page = basename($_SERVER['PHP_SELF']);
 
@@ -65,6 +75,10 @@ function mostraPreviewProdotti(PDO $pdo): void {
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
     $prodotti = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $canAddToCart = false;
+    if (isset($_SESSION['utente_id'])) {
+        $canAddToCart = checkUserGroup($pdo, $_SESSION['utente_id']);
+    }
 
     foreach ($prodotti as $row) {
         $img = 'img/default.jpg';
@@ -102,8 +116,11 @@ function mostraPreviewProdotti(PDO $pdo): void {
         echo '        </div>';
         echo '        <div class="options">';
         echo '          <h6>€' . number_format($row['Prezzo'], 2) . '</h6>';
-        echo '          <a href="#" class="add-to-cart" data-id="' . $row['ID_Prodotto'] . '" data-tipo="prodotto"><i class="fa fa-shopping-cart"></i></a>';
-        echo '        </div>';
+        if ($canAddToCart) {
+          echo '          <a href="#" class="add-to-cart" data-id="' . $row['ID_Prodotto'] . '" data-tipo="prodotto"><i class="fa fa-shopping-cart"></i></a>';
+      } else {
+          echo '          <span class="add-to-cart disabled" title="Accesso limitato"><i class="fa fa-lock"></i></span>';
+      }echo '        </div>';
         echo '      </div>';
         echo '    </div>';
         echo '  </div>';

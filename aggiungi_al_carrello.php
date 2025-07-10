@@ -18,6 +18,22 @@ if (!$id || !in_array($tipo, ['prodotto', 'menu'])) {
     exit;
 }
 
+// Verifica se l'utente appartiene al gruppo "utenti"
+$stmt = $pdo->prepare("
+    SELECT ug.ID_Utente 
+    FROM utente_gruppo ug 
+    JOIN gruppo g ON ug.ID_Gruppo = g.ID_Gruppo 
+    WHERE ug.ID_Utente = ? AND g.Nome = 'utenti'
+");
+$stmt->execute([$userId]);
+$isUserInGroup = $stmt->fetchColumn();
+
+if (!$isUserInGroup) {
+    http_response_code(403);
+    echo 'Non hai i permessi per aggiungere elementi al carrello';
+    exit;
+}
+
 // Trova ID_Carrello dell'utente
 $stmt = $pdo->prepare("SELECT ID_Carrello FROM carrello WHERE ID_Utente = ?");
 $stmt->execute([$userId]);
@@ -58,3 +74,4 @@ if ($tipo === 'prodotto') {
 }
 
 echo 'success';
+?>
