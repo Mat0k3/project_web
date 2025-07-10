@@ -5,12 +5,18 @@ $current_page = basename($_SERVER['PHP_SELF']);
 require_once 'includes/dbh.inc.php';
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 if (isset($_SESSION['gruppo']) && $_SESSION['gruppo'] === 'admin') {
   $classeDisabilitata = 'disabilitato';
 }else{
   $classeDisabilitata = '';
 }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 // Controlla se l'utente è loggato (assumendo che usi le sessioni)

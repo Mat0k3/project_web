@@ -18,6 +18,12 @@ if (isset($_SESSION['gruppo']) && $_SESSION['gruppo'] === 'admin') {
   $classeDisabilitata = '';
 }
 
+if (isset($_SESSION['gruppo']) && $_SESSION['gruppo'] === 'admin') {
+  $classeDisabilitata = 'disabilitato';
+}else{
+  $classeDisabilitata = '';
+}
+
 $current_page = basename($_SERVER['PHP_SELF']);
 
 // Controlla se l'utente è loggato (assumendo che usi le sessioni)
