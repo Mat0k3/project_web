@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once 'includes/dbh.inc.php';
 
 // Gestione delle aggiunte via AJAX

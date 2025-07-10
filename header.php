@@ -199,15 +199,15 @@ if ($carrello) {
               <!-- Sezione utente con nome se loggato -->
               <?php if ($user_logged_in): ?>
                 <div class="user_profile">
-                  <a href="login.php" class="user_link <?php echo ($current_page == 'utente.php'||$current_page == 'dashboard_dinamica.php'||$current_page == 'login.php') ? 'active' : ''; ?>">
-                    <i class="fa fa-user" aria-hidden="true"></i>
+                  <a href="login.php" class="user_link <?php echo ($current_page == 'utente.php'||$current_page == 'dashboard_dinamica.php'||$current_page == 'login.php'||$current_page == 'gestione_ordini.php'||$current_page == 'elimina_prodotti.php'||$current_page == 'aggiungi_elementi_2.php'||$current_page == 'gestione_prenotazioni.php') ? 'active' : ''; ?>">
+                    <i class="fas fa-user" aria-hidden="true"></i>
                     <span class="user_name"><?php echo htmlspecialchars($user_name); ?></span>
                   </a>
                 </div>
               <?php else: ?>
                 <div class="user_auth">
                   <a href="login.php" class="user_link <?php echo ($current_page == 'login.php' || $current_page == 'register.php') ? 'active' : ''; ?>">
-                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <i class="fas fa-user" aria-hidden="true"></i>
                     <span class="auth_text">Accedi</span>
                   </a>
                 </div>
