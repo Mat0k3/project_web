@@ -72,6 +72,9 @@ if (!isset($_SESSION['utente_id'])) {
                   <option value="" disabled selected>
                     How many persons?
                   </option>
+                  <option value="1">
+                    1
+                  </option>
                   <option value="2">
                     2
                   </option>

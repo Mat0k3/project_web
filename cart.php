@@ -371,6 +371,221 @@ if (!isset($_SESSION['utente_id'])) {
     }
 
   }
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.popup-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.popup-container {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 20px;
+    max-width: 450px;
+    width: 90%;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border: 3px solid #f39c12;
+    transform: scale(0.8);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.popup-overlay.show .popup-container {
+    transform: scale(1);
+}
+
+.popup-header {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    color: white;
+    padding: 25px;
+    text-align: center;
+    position: relative;
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.checkmark {
+    font-size: 2.5rem;
+    color: #f39c12;
+    font-weight: bold;
+}
+
+.popup-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.popup-body {
+    padding: 30px;
+    text-align: center;
+}
+
+.popup-subtitle {
+    color: #6c757d;
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.order-summary {
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    border: 2px solid #e9ecef;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.order-summary h5 {
+    color: #2c3e50;
+    font-weight: 700;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+    font-weight: 700;
+    color: #f39c12;
+    font-size: 1.1rem;
+    margin-top: 10px;
+    padding-top: 15px;
+    border-top: 2px solid #f39c12;
+}
+
+.order-item-name {
+    font-weight: 600;
+    color: #2c3e50;
+    flex: 1;
+    text-align: left;
+}
+
+.order-item-qty {
+    color: #6c757d;
+    margin: 0 10px;
+    font-size: 0.9rem;
+}
+
+.order-item-price {
+    color: #f39c12;
+    font-weight: 600;
+    min-width: 60px;
+    text-align: right;
+}
+
+.popup-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-popup {
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    min-width: 140px;
+}
+
+.btn-continue {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    color: white;
+    border: 2px solid #6c757d;
+}
+
+.btn-continue:hover {
+    background: linear-gradient(135deg, #495057 0%, #343a40 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
+}
+
+.btn-view-orders {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    color: white;
+    border: 2px solid #f39c12;
+}
+
+.btn-view-orders:hover {
+    background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(243, 156, 18, 0.3);
+}
+
+@media (max-width: 768px) {
+    .popup-container {
+        max-width: 95%;
+        margin: 20px;
+    }
+    
+    .popup-header {
+        padding: 20px;
+    }
+    
+    .popup-body {
+        padding: 20px;
+    }
+    
+    .success-icon {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .checkmark {
+        font-size: 2rem;
+    }
+    
+    .popup-title {
+        font-size: 1.5rem;
+    }
+    
+    .popup-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn-popup {
+        width: 100%;
+        max-width: 200px;
+    }
+}
   </style>
   
   <section class="py-5">
@@ -463,78 +678,185 @@ if (!isset($_SESSION['utente_id'])) {
         </div>
       </div>
     </div>
+
+    <!-- Popup di conferma ordine -->
+<div class="popup-overlay" id="orderConfirmationPopup">
+    <div class="popup-container">
+        <div class="popup-header">
+            <div class="success-icon">
+                <div class="checkmark">✓</div>
+            </div>
+            <h3 class="popup-title">Ordine Confermato!</h3>
+        </div>
+        
+        <div class="popup-body">
+            <p class="popup-subtitle">
+                Il tuo ordine è stato confermato con successo.<br>
+                Grazie per aver scelto il nostro ristorante!
+            </p>
+            
+            <div class="order-summary" id="orderSummary">
+                <h5>Riepilogo Ordine</h5>
+                <div id="orderItems">
+                    <!-- Gli elementi dell'ordine verranno inseriti dinamicamente -->
+                </div>
+            </div>
+            
+            <div class="popup-buttons">
+                <button class="btn btn-popup btn-continue" onclick="continuaShopping()">
+                    Continua lo shopping
+                </button>
+                <button class="btn btn-popup btn-view-orders" onclick="vaiAOrdini()">
+                    Visualizza ordini
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
   </section>
   
   <script>
 
-function aggiornaContatore(qty) {
-  const counter = document.getElementById('counter');
-  if (qty > 0) {
-    counter.textContent = qty;
-    counter.style.display = 'flex';
-  } else {
-    counter.textContent = '';
-    counter.style.display = 'none';
-  }
-}
-
-  document.querySelectorAll('input[type=number]').forEach(input => {
-    input.addEventListener('change', e => {
-      const tr = e.target.closest('tr');
-      const id = tr.dataset.id;
-      const tipo = tr.dataset.type;
-      const qty = e.target.value;
-  
-      fetch('', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ action: 'update', tipo: tipo, id: id, quantita: qty })
-      }).then(r => r.json()).then(data => {
-        if (data.success) {
-            const prezzoBase = parseFloat(tr.querySelector('.prezzo').textContent.replace(/[^\d.]/g, '')) / e.target.defaultValue;
-            tr.querySelector('.prezzo').textContent = '€ ' + (prezzoBase * qty).toFixed(2);
-            const counter = document.getElementById('counter');
-            document.getElementById('totale').textContent = data.totale;
-            aggiornaContatore(data.quantita_totale);
-
-            e.target.defaultValue = qty;
-        }
-      });
+document.getElementById('checkout-btn')?.addEventListener('click', () => {
+    // Raccogli i dati dell'ordine prima di inviarlo
+    const orderData = {
+        prodotti: [],
+        menu: []
+    };
+    
+    // Raccogli i prodotti dal DOM
+    document.querySelectorAll('tr[data-type="prodotto"]').forEach(tr => {
+        const nome = tr.querySelector('.item-name').textContent;
+        const prezzoText = tr.querySelector('.prezzo').textContent;
+        const prezzo = parseFloat(prezzoText.replace(/[^\d.]/g, ''));
+        const quantita = parseInt(tr.querySelector('.qty-input').value);
+        
+        orderData.prodotti.push({
+            nome: nome,
+            prezzo: prezzo / quantita, // Prezzo unitario
+            quantita: quantita
+        });
     });
-  });
-  
-  document.querySelectorAll('.rimuovi').forEach(btn => {
-    btn.addEventListener('click', e => {
-      const tr = e.target.closest('tr');
-      const id = tr.dataset.id;
-      const tipo = tr.dataset.type;
-      fetch('', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ action: 'delete', tipo: tipo, id: id })
-      }).then(r => r.json()).then(data => {
-        if (data.success) {
-  location.reload();
-}
-
-      });
+    
+    // Raccogli i menu dal DOM
+    document.querySelectorAll('tr[data-type="menu"]').forEach(tr => {
+        const nome = tr.querySelector('.item-name').textContent;
+        const prezzoText = tr.querySelector('.prezzo').textContent;
+        const prezzo = parseFloat(prezzoText.replace(/[^\d.]/g, ''));
+        const quantita = parseInt(tr.querySelector('.qty-input').value);
+        
+        orderData.menu.push({
+            nome: nome,
+            prezzo: prezzo / quantita, // Prezzo unitario
+            quantita: quantita
+        });
     });
-  });
-
-    document.getElementById('checkout-btn')?.addEventListener('click', () => {
+    
     fetch('', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ action: 'checkout' })
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ action: 'checkout' })
     }).then(r => r.json()).then(data => {
-      if (data.success) {
-        alert('Ordine confermato!');
-        location.reload();
-      } else {
-        alert('Errore durante la conferma ordine: ' + (data.error || 'Errore sconosciuto'));
-      }
+        if (data.success) {
+            // Mostra il popup invece dell'alert
+            showOrderConfirmationPopup(orderData);
+        } else {
+            alert('Errore durante la conferma ordine: ' + (data.error || 'Errore sconosciuto'));
+        }
     });
-  });
+});
+
+// Aggiungi queste funzioni JavaScript alla fine dello script esistente:
+
+function showOrderConfirmationPopup(orderData) {
+    const popup = document.getElementById('orderConfirmationPopup');
+    const orderItemsContainer = document.getElementById('orderItems');
+    
+    // Pulisci il container precedente
+    orderItemsContainer.innerHTML = '';
+    
+    let totalPrice = 0;
+    
+    // Aggiungi i prodotti
+    if (orderData.prodotti && orderData.prodotti.length > 0) {
+        orderData.prodotti.forEach(prodotto => {
+            const itemTotal = prodotto.prezzo * prodotto.quantita;
+            totalPrice += itemTotal;
+            
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'order-item';
+            itemDiv.innerHTML = `
+                <span class="order-item-name">${prodotto.nome}</span>
+                <span class="order-item-qty">x${prodotto.quantita}</span>
+                <span class="order-item-price">€${itemTotal.toFixed(2)}</span>
+            `;
+            orderItemsContainer.appendChild(itemDiv);
+        });
+    }
+    
+    // Aggiungi i menu
+    if (orderData.menu && orderData.menu.length > 0) {
+        orderData.menu.forEach(menu => {
+            const itemTotal = menu.prezzo * menu.quantita;
+            totalPrice += itemTotal;
+            
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'order-item';
+            itemDiv.innerHTML = `
+                <span class="order-item-name">${menu.nome}</span>
+                <span class="order-item-qty">x${menu.quantita}</span>
+                <span class="order-item-price">€${itemTotal.toFixed(2)}</span>
+            `;
+            orderItemsContainer.appendChild(itemDiv);
+        });
+    }
+    
+    // Aggiungi il totale
+    const totalDiv = document.createElement('div');
+    totalDiv.className = 'order-item';
+    totalDiv.innerHTML = `
+        <span class="order-item-name">TOTALE</span>
+        <span class="order-item-qty"></span>
+        <span class="order-item-price">€${totalPrice.toFixed(2)}</span>
+    `;
+    orderItemsContainer.appendChild(totalDiv);
+    
+    // Mostra il popup
+    popup.classList.add('show');
+    
+    // Blocca lo scroll della pagina
+    document.body.style.overflow = 'hidden';
+}
+
+function hideOrderConfirmationPopup() {
+    const popup = document.getElementById('orderConfirmationPopup');
+    popup.classList.remove('show');
+    document.body.style.overflow = 'auto';
+}
+
+function continuaShopping() {
+    hideOrderConfirmationPopup();
+    window.location.href = 'menu.php';
+}
+
+function vaiAOrdini() {
+    hideOrderConfirmationPopup();
+    window.location.href = 'login.php'; // Modifica con il percorso corretto
+}
+
+// Chiudi il popup cliccando sull'overlay
+document.getElementById('orderConfirmationPopup').addEventListener('click', function(e) {
+    if (e.target === this) {
+        hideOrderConfirmationPopup();
+    }
+});
+
+// Chiudi il popup con il tasto ESC
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        hideOrderConfirmationPopup();
+    }
+});
   </script>
-  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <?php include 'footer.php'; ?>

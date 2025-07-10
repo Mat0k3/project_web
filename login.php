@@ -18,11 +18,15 @@ if (isset($_SESSION['utente_id'])) {
 
   // Reindirizzamento in base al gruppo
   if ($gruppo === 'utenti') {
-      header("Location: utente.php");
-      exit;
+    $_SESSION['gruppo'] = 'utenti';
+    header("Location: utente.php");
+    exit;
   } elseif ($gruppo === 'admin' || $gruppo === 'cucina') {
-      header("Location: dashboard_dinamica.php");
-      exit;
+    $_SESSION['gruppo'] = 'admin';
+    header("Location: dashboard_dinamica.php");
+    exit;
+  }else{
+    $_SESSION['gruppo'] = '';
   }
 }
 
@@ -131,6 +135,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </form>
   </div>
 </div>
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <?php include 'footer.php'; ?>
 

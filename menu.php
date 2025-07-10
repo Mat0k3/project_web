@@ -9,6 +9,7 @@ include 'header.php';
 
 
 
+
 function getIngredienti(PDO $pdo, int $idProdotto): string {
 
     $sql = "SELECT i.Nome FROM prodotti_ingredienti pi
