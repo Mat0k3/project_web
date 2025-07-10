@@ -157,6 +157,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
   <!-- nice select  -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
   <!-- font awesome style -->
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <link href="css/font-awesome.min.css" rel="stylesheet" />
 
   <!-- Custom styles for this template -->
@@ -418,7 +420,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
   }
   
   .popup-content {
-    background: white;
+    background: rgb(227, 227, 227);
     border-radius: 20px;
     padding: 40px 30px;
     text-align: center;
@@ -426,6 +428,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
     width: 90%;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
     transform: scale(0.7);
+    border: 2px solid #f39c12;
     transition: transform 0.3s ease;
   }
   
@@ -551,6 +554,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
 
   h4{
     color: #ffbe33;
+  }
+
+  .success-icon {
+    color:#f39c12; 
+    font-size: 80px; 
+    margin-bottom: 20px;
+    animation: checkmark 0.6s ease-in-out;
+    /*text-shadow: 0 0 20px rgba(39, 174, 96, 0.5);*/ /* Effetto glow */
   }
 
   </style>
@@ -811,8 +822,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
   <!-- Popup personalizzato per il carrello -->
   <div id="cart-popup" class="cart-popup">
     <div class="popup-content">
-      <div class="popup-icon">
-        <i class="fa fa-check-circle"></i>
+      <div class="success-icon">
+        <i class="fas fa-check-circle"></i>
       </div>
       <h3 class="popup-title">Aggiunto al carrello!</h3>
       <p class="popup-message">Il prodotto è stato aggiunto con successo al tuo carrello.</p>

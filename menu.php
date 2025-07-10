@@ -2,6 +2,7 @@
 
 require_once 'includes/dbh.inc.php';
 
+
 session_start();
 
 include 'header.php';
@@ -223,6 +224,7 @@ function mostraMenu(PDO $pdo): void {
 ?>
 
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="css/menu.css">
 
 
@@ -275,10 +277,8 @@ function mostraMenu(PDO $pdo): void {
 
   <div class="popup-content">
 
-    <div class="popup-icon">
-
-      <i class="fa fa-check-circle"></i>
-
+    <div class="success-icon">
+      <i class="fas fa-check-circle"></i>
     </div>
 
     <h3 class="popup-title">Aggiunto al carrello!</h3>

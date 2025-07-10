@@ -541,7 +541,7 @@
 
 .popup-content {
 
-  background: white;
+  background: rgb(227, 227, 227);
 
   border-radius: 20px;
 
@@ -554,6 +554,8 @@
   width: 90%;
 
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+
+  border: 2px solid #f39c12;
 
   transform: scale(0.7);
 
@@ -799,4 +801,12 @@
 
 .food{
   margin-top: 60px;
+}
+
+.success-icon {
+  color:#f39c12; 
+  font-size: 80px; 
+  margin-bottom: 20px;
+  animation: checkmark 0.6s ease-in-out;
+  /*text-shadow: 0 0 20px rgba(39, 174, 96, 0.5);*/ /* Effetto glow */
 }
