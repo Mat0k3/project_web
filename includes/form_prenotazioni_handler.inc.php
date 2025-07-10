@@ -32,7 +32,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Recupera i dati
     $nome = trim($_POST['nome'] ?? '');
-    $email = trim($_POST['email'] ?? '');
     $data = $_POST['data'] ?? null;
     $ora = $_POST['ora'] ?? null;
     $persone = $_POST['persone'] ?? null;
@@ -40,8 +39,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Validazioni
     if (
         empty($nome) ||
-        empty($email) ||
-        !filter_var($email, FILTER_VALIDATE_EMAIL) ||
         !$data || !$ora || !$persone || (int)$persone <= 0
     ) {
         header("Location: ../book.php?errore=input_non_valido");

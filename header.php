@@ -1,7 +1,10 @@
 <?php
 // Ottieni il nome del file corrente
 $current_page = basename($_SERVER['PHP_SELF']);
+
 require_once 'includes/dbh.inc.php';
+
+$ruolo = $_SESSION['gruppo'];
 
 // Controlla se l'utente è loggato (assumendo che usi le sessioni)
 $user_logged_in = isset($_SESSION['utente_id']);

@@ -18,11 +18,15 @@ if (isset($_SESSION['utente_id'])) {
 
   // Reindirizzamento in base al gruppo
   if ($gruppo === 'utenti') {
-      header("Location: utente.php");
-      exit;
+    $_SESSION['gruppo'] = 'utenti';
+    header("Location: utente.php");
+    exit;
   } elseif ($gruppo === 'admin' || $gruppo === 'cucina') {
-      header("Location: dashboard_dinamica.php");
-      exit;
+    $_SESSION['gruppo'] = 'admin';
+    header("Location: dashboard_dinamica.php");
+    exit;
+  }else{
+    $_SESSION['gruppo'] = '';
   }
 }
 
