@@ -173,7 +173,84 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
 
 <!-- Sostituisci il tag <style> esistente con questo -->
 <style>
-  
+
+.nome-utente {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ff9900;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* Box */
+.modal-box {
+  background: transparent;
+  padding: 0;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 90%;
+  height: 400px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Inner review style */
+.modal-box .box {
+  background: #fff;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(255, 165, 0, 0.2);
+  padding: 40px;
+  overflow-y: auto;
+}
+
+.modal-box .detail-box {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.modal-box .detail-box p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Close button */
+.modal-box .close-btn {
+  position: absolute;
+  top: 0px;
+  right: 20px; /* Cambiato da 'right' a 'left' */
+  font-size: 28px;
+  color: #444;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.modal-box .close-btn:hover {
+  color: #f90;
+}
+
+/* Optional scrollbar styling (for better UX) */
+.modal-box .detail-box::-webkit-scrollbar {
+  width: 0px;
+}
 
   .carousel-wrap {
     position: relative;
@@ -181,12 +258,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
   }
 
   .owl-carousel {
-    transition: height 0s ease;
+    transition: height 0.1s ease;
   }
 
-  .owl-carousel .item {
-    min-height: 150px; /* o quello che ti serve */
-  }
+  /* Forza tutte le recensioni ad avere la stessa altezza */
+.client_owl-carousel .item {
+  height: 260px; /* puoi regolare questa altezza */
+  display: flex;
+  align-items: stretch;
+}
+
+.client_owl-carousel .item .box .detail-box{
+  padding-top: 0px;
+  margin-top: 15px;
+}
+
+.client_owl-carousel .box {
+  width: 100%;
+  padding: 0px;
+  background-color: #222831;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.client_owl-carousel .recensione-testo {
+  max-height: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 5; /* Limita a 5 righe */
+  -webkit-box-orient: vertical;
+}
+
+.client_owl-carousel .stelle {
+  margin-bottom: 10px;
+  margin-right: 0px;  /* Spazio tra stelle e descrizione */
+  font-size: 15px;
+}
 
   .owl-nav {
     position: absolute;
@@ -798,7 +910,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
 
     <div class="carousel-wrap row">
       <div class="owl-carousel client_owl-carousel">
-        <?php
+      <?php
         $stmt = $pdo->prepare("
           SELECT r.Testo, r.Voto, u.Nome 
           FROM recensione r 
@@ -814,19 +926,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
           $testo_completo = htmlspecialchars($rec['Testo']);
           $testo_troncato = strlen($testo_completo) > 150 ? substr($testo_completo, 0, 150) . '...' : $testo_completo;
           $mostra_espandi = strlen($testo_completo) > 150;
-
+          
           echo '<div class="item">
                   <div class="box">
-                    <div class="detail-box">
-                      <p class="recensione-testo">' . $testo_troncato . '</p>';
+                    <div class="detail-box">';
+                    echo '<h6>' . htmlspecialchars($rec['Nome']) . '</h6>';
+                    echo '<div class="stelle">';
+                    for ($v = 1; $v <= 5; $v++) {
+                      echo $v <= $rec['Voto'] ? '⭐' : '☆';
+                    }
+                    echo '</div>';
+                      echo '<p class="recensione-testo">' . $testo_troncato . '</p>';
                       if ($mostra_espandi) {
-                        echo '<a href="#" class="espandi-link text-warning" data-completo="' . htmlspecialchars($testo_completo) . '" data-troncato="' . htmlspecialchars($testo_troncato) . '">Espandi</a>';
+                        echo '<a href="#" class="espandi-link text-warning" 
+                                  data-completo="' . htmlspecialchars($testo_completo) . '" 
+                                  data-troncato="' . htmlspecialchars($testo_troncato) . '" 
+                                  data-nome="' . htmlspecialchars($rec['Nome']) . '" 
+                                  data-voto="' . intval($rec['Voto']) . '">
+                                  Espandi
+                                </a>';
                       }
-          echo '<h6>' . htmlspecialchars($rec['Nome']) . '</h6>
-                      <p>';
-          for ($v = 1; $v <= 5; $v++) {
-            echo $v <= $rec['Voto'] ? '⭐' : '☆';
-          }
+                      '<p>';
           echo     '</p>
                     </div>
                   </div>
@@ -867,6 +987,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
     </div>
   </div>
 
+  <div id="recensioneModal" class="modal-overlay" style="display: none;">
+  <div class="modal-box">
+    <span class="close-btn">&times;</span>
+    <div class="box">
+      <div class="detail-box">
+      <h5 id="modalNome" class="nome-utente"></h5>
+        <p id="modalVoto" style="margin-bottom: 15px; font-size: 18px;"></p>
+        <p id="modalTestoCompleto"></p>
+      </div>
+    </div>
+  </div>
+</div>
   <!-- end client section -->
   <script>
     window.addEventListener('scroll', function () {
@@ -968,45 +1100,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
       });
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-  function aggiornaAltezzaCarousel() {
-    const itemsAttivi = document.querySelectorAll('.owl-carousel .owl-item.active .item');
-    const carousel = document.querySelector('.owl-carousel');
-    if (itemsAttivi.length > 0 && carousel) {
-      let maxHeight = 0;
-      itemsAttivi.forEach(item => {
-        maxHeight = Math.max(maxHeight, item.offsetHeight);
-      });
-      carousel.style.height = maxHeight + 'px';
-    }
-  }
+    document.addEventListener("DOMContentLoaded", function () {
+  const modal = document.getElementById("recensioneModal");
+  const modalText = document.getElementById("modalTestoCompleto");
+  const modalNome = document.getElementById("modalNome");
+  const modalVoto = document.getElementById("modalVoto");
+  const closeBtn = modal.querySelector(".close-btn");
 
-  document.querySelectorAll('.espandi-link').forEach(link => {
-    link.addEventListener('click', function (e) {
+  document.querySelectorAll(".espandi-link").forEach(link => {
+    link.addEventListener("click", function (e) {
       e.preventDefault();
-      this.blur();
 
-      const paragrafo = this.previousElementSibling;
-      const testoCompleto = this.getAttribute('data-completo');
-      const testoTroncato = this.getAttribute('data-troncato');
+      const testoCompleto = this.getAttribute("data-completo");
+      const nome = this.getAttribute("data-nome");
+      const voto = parseInt(this.getAttribute("data-voto"));
 
-      if (this.textContent.toLowerCase() === 'espandi') {
-        paragrafo.textContent = testoCompleto;
-        this.textContent = 'Comprimi';
-      } else {
-        paragrafo.textContent = testoTroncato;
-        this.textContent = 'Espandi';
+      modalText.textContent = testoCompleto;
+      modalNome.textContent = nome;
+
+      // Genera stelle
+      let stelle = '';
+      for (let i = 1; i <= 5; i++) {
+        stelle += i <= voto ? '⭐' : '☆';
       }
+      modalVoto.textContent = stelle;
 
-      aggiornaAltezzaCarousel();
+      modal.style.display = "flex";
     });
   });
 
-  $('.client_owl-carousel').on('changed.owl.carousel', function () {
-    setTimeout(aggiornaAltezzaCarousel, 100);
+  closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
   });
 
-  setTimeout(aggiornaAltezzaCarousel, 500);
+  window.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.style.display = "none";
+    }
+  });
 });
   </script>
 
