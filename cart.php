@@ -587,6 +587,9 @@ if (!isset($_SESSION['utente_id'])) {
         max-width: 200px;
     }
 }
+.fa-user{
+  color: white;
+}
   </style>
   
   <section class="py-5">
@@ -671,7 +674,7 @@ if (!isset($_SESSION['utente_id'])) {
               </div>
               <div class="mt-3">
                 <button class="btn btn-light btn-lg w-100" id="checkout-btn">
-                  Procedi al Pagamento
+                  Procedi all'ordine
                 </button>
               </div>
             </div>

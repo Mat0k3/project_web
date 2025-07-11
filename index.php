@@ -206,7 +206,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testo'], $_POST['voto
 .nome-utente {
   font-size: 20px;
   font-weight: bold;
-  color: #ff9900;
+  color: white;
   margin-bottom: 10px;
   padding-bottom: 5px;
 }
